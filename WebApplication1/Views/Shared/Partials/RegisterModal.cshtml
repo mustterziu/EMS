@@ -1,0 +1,81 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<!-- Modal -->
+<div class="modal fade" id="regjistroModal" tabindex="-1" role="dialog" aria-labelledby="regjistroModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="regjistroModalTitle">Kujdes!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Ju lutem afroni kartelen ne RFID Scanner!
+                <div class="collapse" id="collapseExample">
+                    <form method="post" action="/regjistro">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="firstName">Emri</label>
+                                <input type="text" class="form-control" id="firstName" placeholder="Filan" name="firstName" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lastName">Mbiemri</label>
+                                <input type="text" class="form-control" id="lastName" placeholder="Fisteku" name="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="phoneNumber">Numri Telefonit</label>
+                                <input type="tel" class="form-control" id="phoneNumber" placeholder="+383 (0) 44 xxx xxx" name="phoneNumber" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputGender">Gjinia</label>
+                                <select id="gender" class="form-control" name="gender">
+                                    <option selected>Zgjidh...</option>
+                                    <option value="m">Mashkull</option>
+                                    <option value="f">Femer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputCity">Qyteti</label>
+                                <input type="text" class="form-control" id="inputCity" placeholder="Prizren" name="city">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputState">Shteti</label>
+                                <select id="inputState" class="form-control" name="state">
+                                    <option selected>Zgjidh...</option>
+                                    <option value="ks">Kosove</option>
+                                    <option value="al">Shqiperi</option>
+                                    <option value="mne">Mali i Zi</option>
+                                    <option value="mk">Maqedoni</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="firstName">Pozita</label>
+                                <input type="text" class="form-control" id="position" placeholder="Menaxher" name="position" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputSchedule">Orari</label>
+                                <select id="inputSchedule" class="form-control" name="schedule">
+                                    <option selected>Zgjidh...</option>
+                                    <option value="firstShift">Paradite</option>
+                                    <option value="secondShift">Masdite</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Gjenero</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Mbyll</button>
+                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">Vazhdo</button>
+            </div>
+        </div>
+    </div>
+</div>

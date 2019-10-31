@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "Kontrollo";
+    var employee = (Employee)ViewData["employee"];
+}
+
+
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    Me poshte mund ti gjeni te dhenat per: <strong>@employee.FirstName @employee.LastName</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h2>Financat</h2>
+            </div>
+            <div class="icon">
+                <i class="fas fa-money-check-alt"></i>
+            </div>
+
+            <a href="#" class="small-box-footer">
+                Kliko <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-6">
+        <div class="small-box bg-gradient-danger">
+            <div class="inner">
+                <h2>Ndrysho</h2>
+            </div>
+            <div class="icon">
+                <i class="fas fa-user-edit"></i>
+            </div>
+            <a href="/Employee/@employee.Id" class="small-box-footer">
+                Kliko <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Emri</th>
+            <th scope="col">Data</th>
+            <th scope="col">Ora e Fillimit</th>
+            <th scope="col">Ora e Perfundimit</th>
+            <th scope="col">Pagesa</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+

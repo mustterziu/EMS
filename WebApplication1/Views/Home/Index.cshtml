@@ -1,0 +1,97 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var attendance = (List<Attendance>)ViewData["attendance"];
+}
+
+
+<div class="row">
+    <div class="col-lg-4 col-6">
+        <div class="small-box bg-gradient-success">
+            <div class="inner">
+                <h3>4</h3>
+                <p>Punetoret aktiv</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+                Shfaq Listen <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-6">
+        <div class="small-box bg-gradient-danger">
+            <div class="inner">
+                <h3>6</h3>
+                <p>Punetoret e pushuar</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-user-minus"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+                Shfaq Listen <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-6">
+        <div class="small-box bg-gradient-warning">
+            <div class="inner">
+                <h3>10</h3>
+                <p>Te gjithe punetoret</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <a href="/AllEmployees" class="small-box-footer">
+                Shfaq Listen <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12 col-6">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Emri</th>
+                    <th scope="col">Mbiemri</th>
+                    <th scope="col">Ora e fillimit</th>
+                    <th scope="col1">Ora e mbarimit</th>
+                    <th scope="col">Pozita</th>
+                    <th scope="col1">Pagesa</th>
+                    <th scope="col">Operacionet</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var atd in attendance)
+                {
+                    <tr>
+                        <td>@atd.Emp.FirstName</td>
+                        <td>@atd.Emp.LastName</td>
+                        <td>@atd.StartTime</td>
+                        <td>@atd.EndTime</td>
+                        <td>@atd.Emp.Position</td>
+                        <td>@atd.Payment</td>
+                        <td class="row pl-4">
+                            <div class="icon mr-3">
+                                <a href="#" alt="Ndrysho"><i class="fas fa-user-edit"></i></a>
+                            </div>
+
+                            <div class="icon">
+                                <a href="#" alt="Fshij"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

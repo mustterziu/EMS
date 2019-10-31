@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewData["Title"] = "AllEmployees";
+    var employees = (List<Employee>)ViewData["employees"];
+}
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Emri</th>
+                <th scope="col">Mbiemri</th>
+                <th scope="col">Vendi</th>
+                <th scope="col">Gjinia</th>
+                <th scope="col">Nr Tel</th>
+                <th scope="col1">Operacionet</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in employees)
+            {
+                <tr>
+                    <td>@emp.FirstName</td>
+                    <td>@emp.LastName</td>
+                    <td>@emp.City</td>
+                    <td>@emp.Gender</td>
+                    <th scope="row">@emp.PhoneNumber</th>
+                    <td class="row pl-4">
+                        <div class="icon mr-2">
+                            <a href="/employee/@emp.Id" class="btn btn-primary" alt="Ndrysho"><i class="fas fa-user-edit"></i></a>
+                        </div>
+                        <form method="post" action="/employee/delete">
+                            <input type="hidden" name="id" value="@emp.Id" />
+
+                            <div class="icon">
+                                <button type="submit" class="btn btn-danger" alt="Fshij"><i class="fas fa-pause-circle"></i></button>
+                            </div>
+                        </form>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
