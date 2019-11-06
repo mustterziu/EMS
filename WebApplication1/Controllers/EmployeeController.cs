@@ -11,7 +11,7 @@ namespace WebApplication1.Controllers
     {
 
         [HttpGet("/AllEmployees")]
-        public IActionResult allemployees(EMSContext context)
+        public IActionResult Allemployees(EMSContext context)
         {
             var employees = context.Employee.ToList<Employee>();
             ViewData["employees"] = employees;
@@ -19,7 +19,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost("/regjistro")]
-        public IActionResult regjistro(EMSContext context)
+        public IActionResult Regjistro(EMSContext context)
         {
             Employee emp = new Employee();
 
@@ -48,7 +48,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpGet("/employee/{id}")]
-        public IActionResult showEmployee(int id, EMSContext context)
+        public IActionResult ShowEmployee(int id, EMSContext context)
         {
             var employee = context.Employee.Find(id);
             ViewData["employee"] = employee;
@@ -56,7 +56,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost("/employee/delete")]
-        public IActionResult deleteEmployee(EMSContext context)
+        public IActionResult DeleteEmployee(EMSContext context)
         {
             int id = int.Parse(HttpContext.Request.Form["id"]);
             Employee employee = context.Employee.Find(id);
