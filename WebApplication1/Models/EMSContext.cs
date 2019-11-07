@@ -24,7 +24,7 @@ namespace WebApplication1.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("server=ubt.database.windows.net;user=ubtpz;password=Mefa1234;database=ems");
+                optionsBuilder.UseSqlServer("server=ubt.database.windows.net;user=ubtpz;password=Mefa1234;database=ems;MultipleActiveResultSets=true;");
             }
         }
 

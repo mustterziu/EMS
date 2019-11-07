@@ -21,9 +21,7 @@ namespace WebApplication1.Controllers
         }
 
         public IActionResult Index(EMSContext context)
-        {
-
-            
+        { 
             var attendance = context.Attendance.Where(a => a.StartTime >= DateTime.Parse("2019-10-25 00:00:00.000") && a.StartTime <= DateTime.Parse("2019-10-25 23:59:59.000")).Include(a => a.Emp).ToList();
             ViewData["attendance"] = attendance;
 
