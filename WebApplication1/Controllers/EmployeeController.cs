@@ -65,5 +65,10 @@ namespace WebApplication1.Controllers
 
             return Redirect("/");
         }
+
+        public IActionResult ShowReports()
+        {
+            return View();
+        }
     }
 }

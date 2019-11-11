@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "ShowReports";
+}
+
+<div class="row">
+    <form class="form-check-inline">
+        <div class="form-group mr-5 ml-3">
+            <label for="periudha">Zgjedh Periudhen</label>
+            <select class="form-control" id="periudha">
+                <option>Ditore</option>
+                <option>Javore</option>
+                <option>Mujore</option>
+                <option>Vjetore</option>
+            </select>
+        </div>
+        <div class="form-group mr-5">
+            <label for="renditja">Zgjedh Renditjen</label>
+            <select class="form-control" id="renditja">
+                <option>Emri</option>
+                <option>Mbiemri</option>
+                <option>Pozita</option>
+                <option>Pagesa</option>
+            </select>
+        </div>
+        <div class="form-group mr-5">
+            <label for="orderby">Rendit sipas</label>
+            <select class="form-control" id="orderby">
+                <option>A-Z</option>
+                <option>Z-A</option>
+            </select>
+        </div>
+        <div class="form-group mr-5">
+            <button type="button" class="btn btn-primary" style="margin-top: 28px;">
+                Cakto
+            </button>
+        </div>
+    </form>
+</div>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Emri</th>
+            <th scope="col">Mbiemri</th>
+            <th scope="col">Pozita</th>
+            <th scope="col">Pagesa</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td>FirstName</td>
+                <td>LastName</td>
+                <td>Boss</td>
+                <td>5</td>
+            </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">Total Shpenzimet</td>
+        </tr>
+    </tfoot>
+</table>
