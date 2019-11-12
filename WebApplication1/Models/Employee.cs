@@ -36,7 +36,6 @@ namespace WebApplication1.Models
         [Required (ErrorMessage = "Ju lutem zgjidhni orarin!")]
         public string Schedule { get; set; }
         [Required (ErrorMessage = "Ju lutem caktoni pagen!")]
-        [RegularExpression(@" ^\d{1, 6}(?:\.\d{0,2})", ErrorMessage = "Perdorni vetem numra,ju lutem!")]
         public double PaymentPerHour { get; set; }
 
         public virtual ICollection<Attendance> Attendance { get; set; }

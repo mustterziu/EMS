@@ -43,21 +43,27 @@
     </div>
 </div>
 
-
-
-
 <table class="table">
     <thead class="thead-dark">
-        <tr>
-            <th scope="col">Emri</th>
-            <th scope="col">Data</th>
-            <th scope="col">Ora e Fillimit</th>
-            <th scope="col">Ora e Perfundimit</th>
-            <th scope="col">Pagesa</th>
-        </tr>
+    <tr>
+        <th scope="col">Emri</th>
+        <th scope="col">Data</th>
+        <th scope="col">Ora e Fillimit</th>
+        <th scope="col">Ora e Perfundimit</th>
+        <th scope="col">Pagesa</th>
+    </tr>
     </thead>
     <tbody>
-
+    @foreach (var atd in employee.Attendance)
+    {
+        <tr>
+            <td>@employee.FirstName</td>
+            <td>@employee.LastName</td>
+            <td>@atd.StartTime</td>
+            <td>@atd.EndTime</td>
+            <td>@atd.Payment</td>
+        </tr>
+    }
     </tbody>
 </table>
 

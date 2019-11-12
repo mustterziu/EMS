@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApplication1.Models;
+using static Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions;
 
 namespace WebApplication1.Controllers
 {
@@ -29,20 +30,9 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost("/regjistro")]
-        public IActionResult Regjistro()
+        public IActionResult Regjistro(Employee employee)
         {
-            Employee emp = new Employee();
-
-            emp.FirstName = HttpContext.Request.Form["firstName"];
-            emp.LastName = HttpContext.Request.Form["lastName"];
-            emp.PhoneNumber = int.Parse(HttpContext.Request.Form["phoneNumber"]);
-            emp.Gender = HttpContext.Request.Form["gender"];
-            emp.City = HttpContext.Request.Form["city"];
-            emp.State = HttpContext.Request.Form["state"];
-            emp.Position = HttpContext.Request.Form["position"];
-            emp.Schedule = HttpContext.Request.Form["schedule"];
-
-            _context.Employee.Add(emp);
+            _context.Employee.Add(employee);
             _context.SaveChanges();
 
             return Redirect("/");
@@ -51,9 +41,10 @@ namespace WebApplication1.Controllers
         [HttpGet("/Kontrollo/{id}")]
         public IActionResult Kontrollo(int id)
         {
-            var employee = _context.Employee.Find(id);
+            var employee = _context.Employee.Include(e => e.Attendance).First(e => e.Id == id);
+//            var employee = _context.Employee.Find(id);
             ViewData["employee"] = employee;
-            return View("Views/Home/Kontrollo.cshtml");
+            return View();
         }
 
 
@@ -62,6 +53,7 @@ namespace WebApplication1.Controllers
         {
             var employee = _context.Employee.Find(id);
             ViewData["employee"] = employee;
+            ViewData["updated"] = false;
             return View();
         }
 
@@ -78,6 +70,16 @@ namespace WebApplication1.Controllers
         public IActionResult ShowReports()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Update(Employee employee)
+        {
+            _context.Employee.Update(employee);
+            _context.SaveChanges();
+            ViewData["employee"] = employee;
+            ViewData["updated"] = true;
+            return View("showEmployee");
         }
     }
 }
