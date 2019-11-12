@@ -1,60 +1,76 @@
-﻿
+﻿@model WebApplication1.Models.Employee
 @{
     ViewData["Title"] = "showEmployee";
     var employee = (Employee)ViewData["employee"];
 }
 
 
-<form method="post">
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="firstName">Emri</label>
-            <input type="text" class="form-control" id="firstName" name="firstName" value="@employee.FirstName">
-        </div>
-        <div class="form-group col-md-6">
-            <label for="lastName">Mbiemri</label>
-            <input type="text" class="form-control" id="lastName" name="lastName" value="@employee.LastName">
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="phoneNumber">Numri Telefonit</label>
-            <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" value="@employee.PhoneNumber">
-        </div>
-        <div class="form-group col-md-6">
-            <label for="inputGender">Gjinia</label>
-            <select id="gender" class="form-control" name="gender">
-                 <!option value="m" @((employee.Gender=="m")?"selected": "")>Mashkull</!option>
-                 <!option value="f" @((employee.Gender=="f")?"selected": "")>Femer</!option>
-            </select>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="inputCity">Qyteti</label>
-            <input type="text" class="form-control" id="inputCity" name="city" value="@employee.City">
-        </div>
-        <div class="form-group col-md-6">
-            <label for="inputState">Shteti</label>
-            <select id="inputState" class="form-control" name="state">
-                
-                <!option value="ks" @((employee.State=="ks")?"selected": "")>Kosove</!option>
-                <!option value="al" @((employee.State=="al")?"selected": "")>Shqiperi</!option>
-                <!option value="mne" @((employee.State=="mne")?"selected": "")>Mali i Zi</!option>
-                <!option value="mk" @((employee.State=="mk")?"selected": "")>Maqedoni</!option>
-            </select>
-        </div>
-        <div class="form-group col-md-6">
-            <label for="firstName">Pozita</label>
-            <input type="text" class="form-control" id="position" name="position" value="@employee.Position">
-        </div>
-        <div class="form-group col-md-6">
-            <label for="inputSchedule">Orari</label>
-            <select id="inputSchedule" class="form-control" name="schedule">
-                <!option value="firstShift" @((employee.Schedule=="firstShift")?"selected": "")>Paradite</!option>
-                <!option value="secondShift" @((employee.Schedule=="secondShift")?"selected": "")>Masdite</!option>
-            </select>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Ruaj</button>
-</form>
+    <form method="post">
+        <form method="post" action="/regjistro">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="FirstName">Emri</label>
+                    <input asp-for="FirstName" type="text" class="form-control" id="firstName" value="@employee.FirstName">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="LastName">Mbiemri</label>
+                    <input asp-for="LastName" type="text" class="form-control" id="lastName" value="@employee.LastName">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="PhoneNumber">Numri Telefonit</label>
+                    <input asp-for="PhoneNumber" type="number" class="form-control" id="phoneNumber" value="@employee.PhoneNumber">
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputGender">Gjinia</label>
+                    <select asp-for="Gender" id="gender" class="form-control" value="@employee.Gender">
+                        <option value="m">Mashkull</option>
+                        <option value="f">Femer</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="City">Qyteti</label>
+                    <input asp-for="City" type="text" class="form-control" id="inputCity" value="@employee.City">
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputState">Shteti</label>
+                    <select asp-for="State" id="state" class="form-control" value="@employee.State">
+                        <option value="ks">Kosove</option>
+                        <option value="al">Shqiperi</option>
+                        <option value="mne">Mali i Zi</option>
+                        <option value="mk">Maqedoni</option>
+                    </select>
+                    <span asp-validation-for="State" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Position">Pozita</label>
+                    <input asp-for="Position" type="text" class="form-control" id="position" value="@employee.Position">
+                    <span asp-validation-for="Position" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputSchedule">Orari</label>
+                    <select asp-for="Schedule" id="schedule" class="form-control" value="@employee.Schedule">
+                        <option value="firstShift">Paradite</option>
+                        <option value="secondShift">Masdite</option>
+                    </select>
+                    <span asp-validation-for="Schedule" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="PaymentPerHour">Pagesa per ore</label>
+                    <input asp-for="PaymentPerHour" type="text" class="form-control" id="paymentperHour" value="@employee.PaymentPerHour">
+                    <span asp-validation-for="PaymentPerHour" class="text-danger"></span>
+                </div>
+            </div>
+        </form>
+        <button type="submit" class="btn btn-primary">Ruaj</button>
+    </form>
