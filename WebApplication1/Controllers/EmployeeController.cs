@@ -3,23 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
     public class EmployeeController : Controller
     {
+        private readonly ILogger<HomeController> _logger;
+        private readonly EMSContext _context;
+
+        public EmployeeController(ILogger<HomeController> logger, EMSContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
+
 
         [HttpGet("/AllEmployees")]
-        public IActionResult Allemployees(EMSContext context)
+        public IActionResult Allemployees()
         {
-            var employees = context.Employee.ToList<Employee>();
+            var employees = _context.Employee.ToList<Employee>();
             ViewData["employees"] = employees;
             return View();
         }
 
         [HttpPost("/regjistro")]
-        public IActionResult Regjistro(EMSContext context)
+        public IActionResult Regjistro()
         {
             Employee emp = new Employee();
 
@@ -32,37 +42,36 @@ namespace WebApplication1.Controllers
             emp.Position = HttpContext.Request.Form["position"];
             emp.Schedule = HttpContext.Request.Form["schedule"];
 
-            context.Employee.Add(emp);
-            context.SaveChanges();
+            _context.Employee.Add(emp);
+            _context.SaveChanges();
 
             return Redirect("/");
         }
 
         [HttpGet("/Kontrollo/{id}")]
-        public IActionResult Kontrollo(int id, EMSContext context)
+        public IActionResult Kontrollo(int id)
         {
-            var employee = context.Employee.Find(id);
+            var employee = _context.Employee.Find(id);
             ViewData["employee"] = employee;
             return View("Views/Home/Kontrollo.cshtml");
         }
 
 
         [HttpGet("/employee/{id}")]
-        public IActionResult ShowEmployee(int id, EMSContext context)
+        public IActionResult ShowEmployee(int id)
         {
-            var employee = context.Employee.Find(id);
+            var employee = _context.Employee.Find(id);
             ViewData["employee"] = employee;
             return View();
         }
 
         [HttpPost("/employee/delete")]
-        public IActionResult DeleteEmployee(EMSContext context)
+        public IActionResult DeleteEmployee()
         {
             int id = int.Parse(HttpContext.Request.Form["id"]);
-            Employee employee = context.Employee.Find(id);
-            context.Employee.Remove(employee);
-            context.SaveChanges();
-
+            Employee employee = _context.Employee.Find(id);
+            _context.Employee.Remove(employee);
+            _context.SaveChanges();
             return Redirect("/");
         }
 
