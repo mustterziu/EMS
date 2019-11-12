@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApplication1.Models;
+using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
+
 
 namespace WebApplication1
 {
@@ -25,6 +27,7 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
             services.AddDbContext<EMSContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("EMS")));

@@ -1,44 +1,67 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "AllEmployees";
-    var employees = (List<Employee>)ViewData["employees"];
+    var employees = (List<Employee>) ViewData["employees"];
+//    bool registered = (bool)ViewData["registered"];
 }
 
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Emri</th>
-                <th scope="col">Mbiemri</th>
-                <th scope="col">Vendi</th>
-                <th scope="col">Gjinia</th>
-                <th scope="col">Nr Tel</th>
-                <th scope="col1">Operacionet</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var emp in employees)
-            {
-                <tr>
-                    <td>@emp.FirstName</td>
-                    <td>@emp.LastName</td>
-                    <td>@emp.City</td>
-                    <td>@emp.Gender</td>
-                    <th scope="row">@emp.PhoneNumber</th>
-                    <td class="row pl-4">
-                        <div class="icon mr-2">
-                            <a href="/employee/@emp.Id" class="btn btn-primary" alt="Ndrysho"><i class="fas fa-user-edit"></i></a>
-                        </div>
-                        <form method="post" action="/employee/delete">
-                            <input type="hidden" name="id" value="@emp.Id" />
+@if (TempData["registered"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Sukses!</strong> Te dhenat u ruajten.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Emri</th>
+        <th scope="col">Mbiemri</th>
+        <th scope="col">Vendi</th>
+        <th scope="col">Gjinia</th>
+        <th scope="col">Nr Tel</th>
+        <th scope="col1">Operacionet</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var emp in employees)
+    {
+        <tr>
+            <td>@emp.FirstName</td>
+            <td>@emp.LastName</td>
+            <td>@emp.City</td>
+            <td>@emp.Gender</td>
+            <th scope="row">@emp.PhoneNumber</th>
+            <td class="row pl-4">
+                <div class="icon mr-2">
+                    <a asp-controller="Employee" asp-action="Kontrollo" asp-route-id="@emp.Id" class="btn btn-primary" alt="Kontrollo">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                </div>
+                @* <form method="post" asp-controller="Employee" asp-action="DeleteEmployee"> *@
+                <input type="hidden" name="id" value="@emp.Id"/>
 
-                            <div class="icon">
-                                <button type="submit" class="btn btn-danger" alt="Fshij"><i class="fas fa-pause-circle"></i></button>
-                            </div>
-                        </form>
+                <div class="icon">
+                    <a href="#deleteModal" id="deleteModalBtn" class="btn btn-danger" alt="Fshij" data-toggle="modal" data-target="#deleteModal" data-empid="@emp.Id">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+                @* </form> *@
 
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
 
+<partial name="Partials/FshijModal"/>
+
+@section Scripts{
+<script>
+jQuery(document).on("click", "#deleteModalBtn", function () {
+     var id = jQuery(this).data('empid');
+     jQuery(".modal-body #id").val(id);
+});
+</script>
+}
