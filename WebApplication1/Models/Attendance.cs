@@ -12,6 +12,8 @@ namespace WebApplication1.Models
         public double? Payment { get; set; }
 
         public virtual Employee Emp { get; set; }
+        
+        
     }
 
 

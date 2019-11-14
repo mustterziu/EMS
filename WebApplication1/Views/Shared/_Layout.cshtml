@@ -60,7 +60,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a asp-controller="Home" asp-action="Index" class="nav-link active">
+                            <a asp-controller="Home" asp-action="Index" class="nav-link @(ViewBag.Active.Equals("Kryefaqja") ? "active" :  "")">
                                 <i class="fas fa-home"></i>
                                 <p>Kryefaqja</p>
                             </a>
@@ -72,13 +72,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#kontrolloModal" class="nav-link" data-toggle="modal" data-target="#kontrolloModal">
+                            <a href="#kontrolloModal" class="nav-link @(ViewBag.Active.Equals("Kontrollo") ? "active" :  "")" data-toggle="modal" data-target="#kontrolloModal">
                                 <i class="fas fa-users"></i>
                                 <p>Kontrollo Punetorin</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a asp-controller="Employee" asp-action="ShowReports" class="nav-link">
+                            <a asp-controller="Employee" asp-action="ShowReports" class="nav-link @(ViewBag.Active.Equals("Reports") ? "active" :  "")">
                                 <i class="fas fa-scroll"></i>
                                 <p>Gjenero Raporte</p>
                             </a>

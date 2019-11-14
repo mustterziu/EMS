@@ -74,6 +74,7 @@ namespace WebApplication1.Controllers
 
         public IActionResult ShowReports()
         {
+            ViewBag.Active = "Reports";
             return View();
         }
 
