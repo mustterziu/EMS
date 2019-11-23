@@ -2,23 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace WebApplication1.Models
+namespace EMS.Models
 {
-    public partial class EMSContext : DbContext
+    public class EMSContext : DbContext
     {
-        public EMSContext()
+        public EMSContext(DbContextOptions<EMSContext> options) : base(options)
         {
         }
 
-        public EMSContext(DbContextOptions<EMSContext> options)
-            : base(options)
-        {
-        }
-
-        public virtual DbSet<Admin> Admin { get; set; }
-        public virtual DbSet<Attendance> Attendance { get; set; }
-        public virtual DbSet<Employee> Employee { get; set; }
-
+        public DbSet<Admin> Admin { get; set; }
+        public DbSet<Attendance> Attendance { get; set; }
+        public DbSet<Employee> Employee { get; set; }
+        
+/*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -27,7 +23,9 @@ namespace WebApplication1.Models
                 optionsBuilder.UseSqlServer("server=ubt.database.windows.net;user=ubtpz;password=Mefa1234;database=ems;MultipleActiveResultSets=true;");
             }
         }
-
+*/
+        
+/*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Admin>(entity =>
@@ -129,5 +127,6 @@ namespace WebApplication1.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+*/
     }
 }

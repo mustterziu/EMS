@@ -4,12 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EMS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebApplication1.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebApplication1.Controllers
+namespace EMS.Controllers
 {
     public class HomeController : Controller
     {

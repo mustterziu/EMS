@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EMS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebApplication1.Models;
 using static Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions;
 
-namespace WebApplication1.Controllers
+namespace EMS.Controllers
 {
     public class EmployeeController : Controller
     {
@@ -23,7 +23,7 @@ namespace WebApplication1.Controllers
         [HttpGet("/AllEmployees")]
         public IActionResult Allemployees()
         {
-            var employees = _context.Employee.ToList<Employee>();
+            List<Employee> employees = _context.Employee.ToList<Employee>();
             ViewData["employees"] = employees;
 //            ViewData["registered"] = false;
             return View();
@@ -48,7 +48,7 @@ namespace WebApplication1.Controllers
         [HttpGet("/Kontrollo/{id}")]
         public IActionResult Kontrollo(int id)
         {
-            var employee = _context.Employee.Include(e => e.Attendance).First(e => e.Id == id);
+            Employee employee = _context.Employee.Include(e => e.Attendance).First(e => e.Id == id);
             ViewData["employee"] = employee;
             return View();
         }
@@ -56,7 +56,7 @@ namespace WebApplication1.Controllers
         [HttpGet("/employee/{id}")]
         public IActionResult ShowEmployee(int id)
         {
-            var employee = _context.Employee.Find(id);
+            Employee employee = _context.Employee.Find(id);
             ViewData["employee"] = employee;
             ViewData["updated"] = false;
             return View();
