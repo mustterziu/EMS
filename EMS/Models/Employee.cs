@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EMS.Models
 {
-    public class Employee
+    public class Employee : BaseEntity
     {
         public Employee()
         {

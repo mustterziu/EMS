@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EMS.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using static Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions;
@@ -11,85 +12,150 @@ namespace EMS.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly EMSContext _context;
+        private readonly ILogger<HomeController> logger;
+        private readonly EMSContext context;
+        private readonly UserManager<Admin> userManager;
 
-        public EmployeeController(ILogger<HomeController> logger, EMSContext context)
+        public EmployeeController(ILogger<HomeController> logger, EMSContext context, UserManager<Admin> userManager)
         {
-            _logger = logger;
-            _context = context;
+            this.logger = logger;
+            this.context = context;
+            this.userManager = userManager;
         }
 
+        [Authorize]
         [HttpGet("/AllEmployees")]
         public IActionResult Allemployees()
         {
-            List<Employee> employees = _context.Employee.ToList<Employee>();
-            ViewData["employees"] = employees;
-//            ViewData["registered"] = false;
-            return View();
+            try
+            {
+                logger.LogDebug("Showing Allemployees()");
+                List<Employee> employees = context.Employee.ToList();
+                ViewData["employees"] = employees;
+                return View();
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Error showing AllEmployees", e);
+                throw;
+            }
         }
 
+        [Authorize]
         [HttpPost("/regjistro")]
         public IActionResult Regjistro(Employee employee)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Employee.Add(employee);
-                _context.SaveChanges();
-                TempData["registered"] = true;
-                return RedirectToAction("Allemployees");
-            }
-            else
-            {
+                logger.LogDebug("Regjistro()");
+                if (ModelState.IsValid)
+                {
+                    context.Employee.Add(employee);
+                    context.SaveChanges();
+                    logger.LogDebug("New Employee was created by " + User.Identity.Name);
+                    TempData["registered"] = true;
+                    return RedirectToAction("Allemployees");
+                }
                 return RedirectToAction("Index", "Home");
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Error creating new Employee");
+                throw;
             }
         }
 
+
+        [Authorize]
         [HttpGet("/Kontrollo/{id}")]
         public IActionResult Kontrollo(int id)
         {
-            Employee employee = _context.Employee.Include(e => e.Attendance).First(e => e.Id == id);
-            ViewData["employee"] = employee;
-            return View();
+            try
+            {
+                logger.LogDebug("Kontrollo {id}", id);
+                Employee employee = context.Employee.Include(e => e.Attendance).First(e => e.Id == id);
+                ViewData["employee"] = employee;
+                return View();
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Error getting details for {id}", id);
+                throw;
+            }
         }
 
+        [Authorize]
         [HttpGet("/employee/{id}")]
         public IActionResult ShowEmployee(int id)
         {
-            Employee employee = _context.Employee.Find(id);
-            ViewData["employee"] = employee;
-            ViewData["updated"] = false;
-            return View();
+            try
+            {
+                logger.LogDebug("ShowEmployee({id})", id);
+                Employee employee = context.Employee.Find(id);
+                ViewData["employee"] = employee;
+                ViewData["updated"] = false;
+                return View();
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Error getting details for {id}", id);
+                throw;
+            }
         }
 
+        [Authorize]
         [HttpPost("/employee/delete")]
         public IActionResult DeleteEmployee()
         {
-            int id = int.Parse(HttpContext.Request.Form["id"]);
-            Employee employee = _context.Employee.Find(id);
-            _context.Employee.Remove(employee);
-            _context.SaveChanges();
-            return RedirectToAction("Allemployees");
+            try
+            {
+                logger.LogDebug("DeleteEmployee()");
+                int id = int.Parse(HttpContext.Request.Form["id"]);
+                Employee employee = context.Employee.Find(id);
+                context.Employee.Remove(employee);
+                context.SaveChanges();
+                logger.LogInformation("Employee with id: {id} was deleted by {name}", employee.Id, User.Identity.Name);
+                return RedirectToAction("Allemployees");
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Error deleting Employee with id: {id}");
+                throw;
+            }
         }
 
+        [Authorize]
         public IActionResult ShowReports()
         {
             ViewBag.Active = "Reports";
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Update(Employee employee)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Employee.Update(employee);
-                _context.SaveChanges();
-                ViewData["employee"] = employee;
-                ViewData["updated"] = true;
-                return View("showEmployee");   
+                logger.LogDebug("Update()");
+                if (ModelState.IsValid)
+                {
+                    context.Employee.Update(employee);
+                    context.Entry(employee).Property("CreatedBy").IsModified = false;
+                    context.Entry(employee).Property("DateCreated").IsModified = false;
+                    context.SaveChanges();
+                    logger.LogDebug("Emplyee with id: {id} was updated by: {name}", employee.Id, User.Identity.Name);
+                    ViewData["employee"] = employee;
+                    ViewData["updated"] = true;
+                    return View("showEmployee");   
+                }
+                return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Index", "Home");
+            catch (Exception e)
+            {
+                logger.LogError("Error updating Employee with id: {id}", employee.Id);
+                throw;
+            }
         }
     }
 }

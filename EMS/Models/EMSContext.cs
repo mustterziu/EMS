@@ -1,132 +1,51 @@
 ﻿using System;
+using System.Linq;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace EMS.Models
 {
-    public class EMSContext : DbContext
+    public class EMSContext : IdentityDbContext<Admin>
     {
-        public EMSContext(DbContextOptions<EMSContext> options) : base(options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public EMSContext(DbContextOptions<EMSContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
-
-        public DbSet<Admin> Admin { get; set; }
         public DbSet<Attendance> Attendance { get; set; }
         public DbSet<Employee> Employee { get; set; }
-        
-/*
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+        public override int SaveChanges()
         {
-            if (!optionsBuilder.IsConfigured)
+            AddTimestamps();
+            return base.SaveChanges();
+        }
+
+        public void AddTimestamps()
+        {
+            var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
+
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var currentUsername = !string.IsNullOrEmpty(userId)
+                ? userId
+                : "Anonymous";
+
+            foreach (var entity in entities)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("server=ubt.database.windows.net;user=ubtpz;password=Mefa1234;database=ems;MultipleActiveResultSets=true;");
+                if (entity.State == EntityState.Added)
+                {
+                    ((BaseEntity)entity.Entity).DateCreated = DateTime.UtcNow;
+                    ((BaseEntity)entity.Entity).CreatedBy = currentUsername;
+                }
+
+                ((BaseEntity)entity.Entity).DateModified = DateTime.UtcNow;
+                ((BaseEntity)entity.Entity).ModifiedBy = currentUsername;
             }
         }
-*/
-        
-/*
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Admin>(entity =>
-            {
-                entity.ToTable("admin");
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasColumnName("password")
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Username)
-                    .IsRequired()
-                    .HasColumnName("username")
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Attendance>(entity =>
-            {
-                entity.ToTable("attendance");
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.EmpId).HasColumnName("empId");
-
-                entity.Property(e => e.EndTime)
-                    .HasColumnName("endTime")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Payment).HasColumnName("payment");
-
-                entity.Property(e => e.StartTime)
-                    .HasColumnName("startTime")
-                    .HasColumnType("datetime");
-
-                entity.HasOne(d => d.Emp)
-                    .WithMany(p => p.Attendance)
-                    .HasForeignKey(d => d.EmpId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_attendance_employee");
-            });
-
-            modelBuilder.Entity<Employee>(entity =>
-            {
-                entity.ToTable("employee");
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.City)
-                    .IsRequired()
-                    .HasColumnName("city")
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasColumnName("firstName")
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Gender)
-                    .IsRequired()
-                    .HasColumnName("gender")
-                    .HasMaxLength(2)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasColumnName("lastName")
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.PhoneNumber).HasColumnName("phoneNumber");
-
-                entity.Property(e => e.Position)
-                    .IsRequired()
-                    .HasColumnName("position")
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Schedule)
-                    .IsRequired()
-                    .HasColumnName("schedule")
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.State)
-                    .IsRequired()
-                    .HasColumnName("state")
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-            });
-
-            OnModelCreatingPartial(modelBuilder);
-        }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-*/
     }
 }

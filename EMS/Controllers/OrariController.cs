@@ -5,38 +5,40 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EMS.Controllers
 {
+    [Route("/api/[Controller]")]
     public class OrariController : Controller
     {
-        private readonly EMSContext _context;
+        private readonly EMSContext context;
 
         public OrariController(EMSContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
-        [HttpPost("/checkin")]
+        //TODO Double checkin fix
+        [HttpPost("{id:int}")]
         public IActionResult CheckIn(int id)
         {
             Attendance attendance = new Attendance();
             attendance.StartTime = DateTime.Now;
-            _context.Employee.Find(id).Attendance.Add(attendance);
-            _context.SaveChanges();
+            context.Employee.Find(id).Attendance.Add(attendance);
+            context.SaveChanges();
 
             return Ok("Checked In");
         }
         
-        [HttpPost("/checkout")]
+        //TODO fix bugs
         public IActionResult CheckOut(int id)
         {
-            Employee employee = _context.Employee.Find(id);
+            Employee employee = context.Employee.Find(id);
             
-            Attendance attendance = _context.Attendance.Where(att => att.EmpId == id && att.StartTime > DateTime.Today).ToList().First();
+            Attendance attendance = context.Attendance.Where(att => att.EmpId == id && att.StartTime > DateTime.Today).ToList().First();
             attendance.EndTime = DateTime.Now;
             TimeSpan test = (TimeSpan) (attendance.EndTime - attendance.StartTime);
             double hours = test.TotalHours;
             attendance.Payment = Math.Round((hours * employee.PaymentPerHour), 3);
-            _context.Attendance.Update(attendance);
-            _context.SaveChanges();
+            context.Attendance.Update(attendance);
+            context.SaveChanges();
             
             return Ok("Checked Out");
         }

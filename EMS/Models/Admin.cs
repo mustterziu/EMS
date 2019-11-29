@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace EMS.Models
 {
-    public class Admin
+    public class Admin : IdentityUser
     {
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string FirstName { get; set; }
     }
 }
