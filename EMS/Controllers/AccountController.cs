@@ -69,7 +69,7 @@ namespace EMS.Controllers
             Admin user = new Admin
             {
                 UserName = "Urim",
-                PasswordChangeRequired = false;
+                PasswordChangeRequired = false,
             };
             IdentityResult result = await userManager.CreateAsync(user, "PWpw6969!!");
             return Ok("test");
