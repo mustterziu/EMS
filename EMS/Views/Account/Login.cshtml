@@ -3,29 +3,34 @@
     ViewData["Title"] = "Login";
     Layout = null;
 }
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="~/css/login.css">
-</head>
-<body>
-    <div class="log-form">
-        <h2>Login to your account</h2>
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="Username" placeholder="username" />
-            <span asp-validation-for="Username" class="text-danger"></span>
-            <br />
-            <input asp-for="Password" placeholder="password" />
-            <span asp-validation-for="Password" class="text-danger"></span>
-            <br />
-            <button type="submit" class="btn">Login</button>
-        </form>
-    </div><!--end log form -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <title>Kycu | EMS</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="~/css/loginpage.css" rel="stylesheet">
+</head>
+
+<body class="text-center">
+    <form class="form-signin" method="post">
+        <img class="mb-4" src="~/template/dist/img/ubtlogo.png" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Ju lutem kycuni!</h1><br />
+        <input type="text" asp-for="Username" class="form-control" placeholder="Perdoruesi: admin" required autofocus>
+        <input type="password" asp-for="Password" class="form-control" placeholder="Fjalekalimi: EMSadmin123" required>
+        <small id="loginHelp" class="form-text text-muted">Perdoruesi dhe fjalekalimi duhet te nderrohen menjehere pas kycjes se pare!</small>
+        <br />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Kycu</button>
+        <p class="mt-5 mb-3 text-muted">&copy; EMS2019</p>
+    </form>
 </body>
 </html>
+
