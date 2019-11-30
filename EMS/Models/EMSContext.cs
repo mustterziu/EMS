@@ -25,6 +25,11 @@ namespace EMS.Models
             return base.SaveChanges();
         }
 
+        public int DefaultSaveChanges()
+        {
+            return base.SaveChanges();
+        }
+
         public void AddTimestamps()
         {
             var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));

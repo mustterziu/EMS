@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Newtonsoft;
+using Newtonsoft.Json;
 
 namespace EMS
 {
@@ -31,7 +33,11 @@ namespace EMS
         {
             services.AddIdentity<Admin, IdentityRole>().AddEntityFrameworkStores<EMSContext>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
             services.AddDbContext<EMSContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("EMS")));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -45,6 +51,10 @@ namespace EMS
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
                 options.SlidingExpiration = true;
             });
+
+            services.AddAuthentication()
+                .AddCookie()
+                .AddJwtBearer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
