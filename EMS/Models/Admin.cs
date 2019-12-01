@@ -4,6 +4,6 @@ namespace EMS.Models
 {
     public class Admin : IdentityUser
     {
-        public string FirstName { get; set; }
+        public bool PasswordChangeRequired { get; set; }
     }
 }

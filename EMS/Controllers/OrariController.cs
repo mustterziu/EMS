@@ -40,10 +40,17 @@ namespace EMS.Controllers
                 {
                     StartTime = DateTime.Now
                 };
-                context.Employee.Find(input.id).Attendance.Add(attendance);
-                context.DefaultSaveChanges();
+                try
+                {
+                    context.Employee.Find(input.id).Attendance.Add(attendance);
+                    context.DefaultSaveChanges();
 
-                return Ok("Checked In");
+                    return Ok("Checked In");
+                }
+                catch(NullReferenceException ex)
+                {
+                    return NotFound($"Employee with id: {input.id} was not found");
+                }
             }
             return BadRequest("Something went wrong");
         }

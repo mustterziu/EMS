@@ -1,7 +1,9 @@
 ﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EMS.Models;
 using EMS.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -32,7 +34,7 @@ namespace EMS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(Login model)
         {
             if (ModelState.IsValid)
             {
@@ -40,7 +42,6 @@ namespace EMS.Controllers
 
                 if (result.Succeeded)
                 {
-                    
                     if (Request.Query.Keys.Contains("ReturnUrl"))
                     {
                         return Redirect(Request.Query["ReturnUrl"].First());
@@ -51,9 +52,7 @@ namespace EMS.Controllers
                     }
                 }
             }
-
             ModelState.AddModelError("", "Failed to login");
-
             return View();
         }
 
@@ -63,22 +62,66 @@ namespace EMS.Controllers
             return RedirectToAction("Login");
         }
 
+        [Authorize]
+        public IActionResult Security()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> SecurityAsync(PasswordChange password)
+        {
+            if (ModelState.IsValid)
+            {
+                Admin user = await userManager.GetUserAsync(User);
+
+                if (await userManager.CheckPasswordAsync(user, password.currentPassword))
+                {
+                    if (password.newPassword.Equals(password.confirmNewPassword))
+                    {
+                        IdentityResult result = await userManager.ChangePasswordAsync(user, password.currentPassword, password.newPassword);
+                        if (result.Succeeded)
+                        {
+                            var claim = new Claim("PasswordChangeRequired", "true");
+                            IdentityResult task = await userManager.RemoveClaimAsync(user, claim);
+                            await signInManager.SignInAsync(user, false);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", result.Errors.ToList().FirstOrDefault().Description);
+                            return View();
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Konfirmo mire fjalekalimin e ri");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Fjalekalimi eshte gabim");
+                    return View();
+                }                
+            }
+            else
+            {
+                ModelState.AddModelError("", "Plotesoni te gjitha fushat.");
+                return View();
+            }
+            return View();
+        }        
+
         [HttpGet("/createUser")]
         public async Task<IActionResult> TestAsync()
         {
             Admin user = new Admin
             {
                 UserName = "Urim",
-                FirstName = "Urim"
+                PasswordChangeRequired = false,
             };
             IdentityResult result = await userManager.CreateAsync(user, "PWpw6969!!");
-            return Ok("test");
-        }
-
-        public async Task<IActionResult> TestLoginAsync()
-        {
-            Admin user = await userManager.GetUserAsync(User);
-
             return Ok("test");
         }
     }
