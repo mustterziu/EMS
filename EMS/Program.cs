@@ -1,4 +1,5 @@
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EMS.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -47,8 +48,12 @@ namespace EMS
                         {
                             throw new InvalidOperationException("Error creating default user");
                         }
+                        else
+                        {
+                            var claim = new Claim("PasswordChangeRequired", "true");
+                            await userManager.AddClaimAsync(admin, claim);
+                        }                        
                     }
-
                 }
                 catch (Exception e)
                 {

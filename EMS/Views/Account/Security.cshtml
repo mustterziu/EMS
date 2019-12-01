@@ -1,0 +1,41 @@
+﻿@model EMS.Models.ViewModels.PasswordChange
+
+@{
+    ViewData["Title"] = "Security";
+    ViewBag.Active = "Kryefaqja";
+}
+
+<h1>Security</h1>
+
+<h4>Password Change</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4 offset-3">
+        <form asp-action="Security">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="currentPassword" class="control-label">Fjalekalimi</label>
+                <input asp-for="currentPassword" type="password" class="form-control" />
+                <span asp-validation-for="currentPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="newPassword" class="control-label">Fjalekalimi i ri</label>
+                <input asp-for="newPassword" type="password" class="form-control" />
+                <span asp-validation-for="newPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="confirmNewPassword" class="control-label">Konfirmo fjalekalimin e ri</label>
+                <input asp-for="confirmNewPassword" type="password" class="form-control" />
+                <span asp-validation-for="confirmNewPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
