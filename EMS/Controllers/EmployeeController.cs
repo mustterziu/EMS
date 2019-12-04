@@ -5,6 +5,7 @@ using EMS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using static Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions;
 
@@ -127,6 +128,54 @@ namespace EMS.Controllers
         [Authorize]
         public IActionResult ShowReports()
         {
+            List<Employee> employees = null;
+            ViewData["employees"] = employees;
+            ViewBag.Active = "Reports";
+            return View();
+        }
+
+
+        [Authorize]
+        [HttpPost()]
+        public IActionResult ShowReports(string periudha, string renditja, string orderby)
+        {
+            var employees = from e in context.Employee
+                           select e;
+            if(orderby == "AZ")
+            {
+                switch (renditja)
+                {
+                    case "Emri":
+                        employees = employees.OrderBy(e => e.FirstName);
+                        break;
+                    case "Mbiemri":
+                        employees = employees.OrderBy(e => e.LastName);
+                        break;
+                    case "Pozita":
+                        employees = employees.OrderBy(e => e.Position);
+                        break;
+                    case "Pagesa":
+                        //
+                        break;
+                }
+            }else if(orderby == "ZA"){
+                switch (renditja)
+                {
+                    case "Emri":
+                        employees = employees.OrderByDescending(e => e.FirstName);
+                        break;
+                    case "Mbiemri":
+                        employees = employees.OrderByDescending(e => e.LastName);
+                        break;
+                    case "Pozita":
+                        employees = employees.OrderByDescending(e => e.Position);
+                        break;
+                    case "Pagesa":
+                        //
+                        break;
+                }
+            }
+            ViewData["employees"] = employees.ToList();
             ViewBag.Active = "Reports";
             return View();
         }

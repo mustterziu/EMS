@@ -1,13 +1,14 @@
 ﻿
 @{
     ViewData["Title"] = "ShowReports";
+    var employees = (List<Employee>) ViewData["employees"];
 }
 
 <div class="row">
-    <form class="form-check-inline">
+    <form class="form-check-inline" method="post" asp-controller="Employee" asp-action="ShowReports">
         <div class="form-group mr-5 ml-3">
             <label for="periudha">Zgjedh Periudhen</label>
-            <select class="form-control" id="periudha">
+            <select class="form-control" id="periudha" name="periudha">
                 <option>Ditore</option>
                 <option>Javore</option>
                 <option>Mujore</option>
@@ -16,7 +17,7 @@
         </div>
         <div class="form-group mr-5">
             <label for="renditja">Zgjedh Renditjen</label>
-            <select class="form-control" id="renditja">
+            <select class="form-control" id="renditja" name="renditja">
                 <option>Emri</option>
                 <option>Mbiemri</option>
                 <option>Pozita</option>
@@ -25,13 +26,13 @@
         </div>
         <div class="form-group mr-5">
             <label for="orderby">Rendit sipas</label>
-            <select class="form-control" id="orderby">
-                <option>A-Z</option>
-                <option>Z-A</option>
+            <select class="form-control" id="orderby" name="orderby">
+                <option value="AZ">A-Z</option>
+                <option value="ZA">Z-A</option>
             </select>
         </div>
         <div class="form-group mr-5">
-            <button type="button" class="btn btn-primary" style="margin-top: 28px;">
+            <button type="submit" class="btn btn-primary" style="margin-top: 28px;">
                 Cakto
             </button>
         </div>
@@ -49,13 +50,21 @@
         </tr>
     </thead>
     <tbody>
-            <tr>
-                <td>FirstName</td>
-                <td>LastName</td>
-                <td>Boss</td>
-                <td>5</td>
-            </tr>
-    </tbody>
+        @if (employees != null)
+        {
+            @foreach (var emp in employees)
+            {
+                <tr>
+                    <td>@emp.FirstName</td>
+                    <td>@emp.LastName</td>
+                    <td>@emp.Position</td>
+                    <td>kurgjo per momentin</td>
+                </tr>
+
+            }
+        }
+
+            </tbody>
     <tfoot>
         <tr>
             <td colspan="4">Total Shpenzimet</td>

@@ -14,7 +14,7 @@ namespace EMS
         public static void Main(string[] args)
         {
             IHost host = CreateHostBuilder(args).Build();
-            CreateDefaultAccountAsync(host).Wait();
+           // CreateDefaultAccountAsync(host).Wait();
             host.Run();
         }
 
