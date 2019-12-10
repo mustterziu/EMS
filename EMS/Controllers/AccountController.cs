@@ -16,12 +16,14 @@ namespace EMS.Controllers
         private readonly ILogger<AccountController> logger;
         private readonly SignInManager<Admin> signInManager;
         private readonly UserManager<Admin> userManager;
+        private readonly EMSContext context;
 
-        public AccountController(ILogger<AccountController> logger, SignInManager<Admin> signInManager, UserManager<Admin> userManager)
+        public AccountController(ILogger<AccountController> logger, SignInManager<Admin> signInManager, UserManager<Admin> userManager, EMSContext context)
         {
             this.logger = logger;
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.context = context;
         }
 
         public IActionResult Login()
@@ -103,7 +105,7 @@ namespace EMS.Controllers
                 {
                     ModelState.AddModelError("", "Fjalekalimi eshte gabim");
                     return View();
-                }                
+                }
             }
             else
             {
@@ -111,18 +113,30 @@ namespace EMS.Controllers
                 return View();
             }
             return View();
-        }        
+        }
+
+        public IActionResult EmployeeLogin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult LoginEmployee(int empId)
+        {
+            Employee employee = context.Employee.FirstOrDefault(emp => emp.Id == empId);
+            return View(employee);
+        }
 
         [HttpGet("/createUser")]
         public async Task<IActionResult> TestAsync()
         {
             Admin user = new Admin
             {
-                UserName = "Urim",
+                UserName = "UserTest",
                 PasswordChangeRequired = false,
             };
-            IdentityResult result = await userManager.CreateAsync(user, "PWpw6969!!");
-            return Ok("test");
+            IdentityResult result = await userManager.CreateAsync(user, "UserTest123!!");
+            return Ok("User: UserTest, Password: UserTest123!!");
         }
     }
 }

@@ -1,0 +1,15 @@
+﻿@{ 
+    Layout = "_LayoutEmp.cshtml";
+}
+
+<h1 class="cover-heading">Kujdes!</h1>
+<p class="lead">Ju lutem afroni kartelen ne RFID Scanner per tu kycur ne sistem.</p>
+<form method="post" asp-controller="Account" asp-action="LoginEmployee">
+    <p class="lead">
+        <input type="password" name="empId" />
+        <input type="submit" />
+    </p>
+    <p class="lead">
+        <small><a asp-controller="Account" asp-action="Login"> Kliko ketu per tu kycur si Admin!</a></small>
+    </p>
+</form>
