@@ -38,7 +38,7 @@ namespace EMS.Controllers
             catch (Exception e)
             {
                 logger.LogError("Error showing AllEmployees", e);
-                throw;
+                return RedirectToAction("Error", "Home");
             }
         }
 
@@ -62,7 +62,7 @@ namespace EMS.Controllers
             catch (Exception e)
             {
                 logger.LogError("Error creating new Employee");
-                throw;
+                return RedirectToAction("Error", "Home");
             }
         }
         [HttpPost]
@@ -81,7 +81,7 @@ namespace EMS.Controllers
             catch (Exception e)
             {
                 logger.LogError("Error creating new Employee");
-                throw;
+                return RedirectToAction("Error", "Home");
             }
         }
 
@@ -100,7 +100,7 @@ namespace EMS.Controllers
             catch (Exception e)
             {
                 logger.LogError("Error getting details for {id}", id);
-                throw;
+                return RedirectToAction("Error", "Home");
             }
         }
 
@@ -119,7 +119,7 @@ namespace EMS.Controllers
             catch (Exception e)
             {
                 logger.LogError("Error getting details for {id}", id);
-                throw;
+                return RedirectToAction("Error", "Home");
             }
         }
 
@@ -140,7 +140,7 @@ namespace EMS.Controllers
             catch (Exception e)
             {
                 logger.LogError("Error deleting Employee with id: {id}");
-                throw;
+                return RedirectToAction("Error", "Home");
             }
         }
 
@@ -222,7 +222,7 @@ namespace EMS.Controllers
             catch (Exception e)
             {
                 logger.LogError("Error updating Employee with id: {id}", employee.Id);
-                throw;
+                return RedirectToAction("Error", "Home");
             }
         }
         public IActionResult ShfaqKontraten() {
