@@ -1,0 +1,78 @@
+﻿@model EMS.Models.Employee
+
+@{
+    ViewData["Title"] = "ShfaqKontraten";
+    ViewBag.Active = "Kryefaqja";
+}
+
+
+<div class="kontrata">
+    <div class="first">
+        <img src="~/Img/logo.png">
+        <h3>Marreveshje pune</h3>
+        <h5>-Ne mes-</h5>
+        <p><b>Emri i Firmes <br>Lloji i firmes<br>Adresa</b></p>
+        <h5>-I referuar si pune dhenes-</h5>
+        <h5>-Dhe-</h5>
+        <p><b>Z/znj @Model.FirstName @Model.LastName i lindur me DITELINDJA <br>Qe jeton ne @Model.City ,  <br>@Model.State </b></p>
+        <h5>-I referuar si pune marres-</h5>
+        <br>
+    </div>
+    <p>Eshte rene dakord si më poshte:</p>
+    <h4>1 Fillimi i raportit të punësimit</h4>
+
+    <p>1.1 Ekziston një marrëdhënie pune e përkohshme sipas nenit 15 , e cila fillon më DATA** u. mbaron me DATA**</p>
+    <p>Marrëveshja e Punës përfundon me datën e periudhës së caktuar, pa u kërkuar njoftim. Për kohëzgjatjen e afatit, afati i punës mund të përfundojë nga pala pa njoftim për kauzë të mirë ose në përputhje me njoftimin e përfundimit sipas kësaj kontrate të punës.</p>
+    <p>1.2 Periudha e provës është 3 muaj në pranimin e ri.Në periudhën e provës, klienti do të paguajë 3 ditë kalendarike në muajin e parë dhe 7 ditë kalendarike pas të hënës së parë.</p>
+    <h4>2 Aktivitet</h4>
+    <p>2.1 Punonjësi punësohet si punonjës tregtar dhe kërkohet të punojë si punonjës në sistemin e rotacionit.</p>
+    <p>
+        2.2 Përshkrimi i funksionit mund të ndryshohet nga punëdhënësi dhe në asnjë mënyrë nuk kufizon të drejtën e mësimit të punëdhënësit siç thuhet në kontratë. <br>
+        <br>
+        Punëdhënësi ka të drejtë t'i caktojë punonjësit një punë tjetër ekuivalente dhe të arsyeshme, që korrespondon me njohuritë dhe aftësinë e tij.  Punonjësi është i detyruar të ndjekë udhëzimet e punëdhënësit dhe të punojë në institucione të tjera të punëdhënësit për sa i përket arsyeshmërisë lokale.
+        <br> Punëdhënësi ka të drejtë të informojë punonjësit në të gjitha fushat e restorantit (p.sh. aktivitetet në dhomën e ngrënies, në banakun, tavolinën e parave, në stacionet e mallrave dhe pijeve, me të gjitha punët e nevojshme për përgatitjen dhe prodhimin e produkteve dhe përbërësve të produkteve), si dhe në sanitare dhe  Zona e higjenës) kodrina dhe transferimi i detyrave të duhura.  Punonjësi gjithashtu merr përsipër, në drejtimin e punëdhënësit, të kryejë të gjitha punët e nevojshme ndihmëse, pastrimi dhe pastrimi, si gjatë orarit të hapjes së restorantit ashtu edhe para dhe pas mbylljes së restorantit, brenda dhe jashtë ambienteve.  Ndarja e veprimtarisë përkatëse kryhet nga menaxhmenti i restorantit.
+    </p>
+    <h4>3 kohë pune Punonjësi po punon me kohë të plotë.</h4>
+    <p>3.1 Aplikohet vetëm për punonjësit me kohë të plotë Orari i rregullt i punës është 39 orë në javë për 5 ditë pune dhe 169 orë në muaj, përkatësisht.  Për aq sa muaji kalendarik bie nën numrin mujor prej 169, kjo diferencë do të kompensohet për mesataren vjetore.</p>
+    <p>3.2 Ndryshimi në orarin e punës vjetore Punonjësi pranon në mënyrë të shprehur dhe të pakthyeshme që koha e punës e rënë dakord do të shndërrohet në një kohë pune vjetore, në përputhje me dispozitat përkatëse të negociatave kolektive, me kusht që punëdhënësi të kërkojë ose komunikojë me shkrim.  Në këtë rast, një kohë pune vjetore prej 2028 orësh është rënë dakord për punonjësit me kohë të plotë.Për punonjësit me kohë të pjesshme, një kohë pune vjetore pro rata aplikohet në përputhje me raportin e orarit të punës të kontraktuar më parë me orarin e rregullt të punës.</p>
+    <p>3.3 Punonjësi është i detyruar të punojë në ndërrime alternative, si dhe të kryejë punën e tij gjatë ditëve të javës, të dielave dhe festave bankare, si dhe natën, sipas klasifikimit të kompanisë, si dhe të sigurojë punë shtesë të lejueshme sipas kërkesës.  E drejta për pagesa për të dielat, pushimet publike dhe punën e natës, si dhe punë shtesë rregullohet nga dispozitat përkatëse tarifore të zbatueshme.  Koha e punës fillon pas lëvizjes (veshje detyre) me fillimin e punës në vendin e punës dhe përfundon para se të lëvizë me përfundimin e punës në vendin e punës.</p>
+    <p>34 Orari i punës varet nga lista e listës.  Lista e regjistrimit është krijuar nga punëdhënësi.  bëhet e njohur dhe është detyruese.  Ndryshimet afatshkurtra bëhen të njohura në mënyrën e zakonshme.  Employeedo punonjës është i detyruar të informojë veten për listën e tij.  Për krijimin e listës, punëdhënësi do të marrë në konsideratë orët e mëposhtme të punës të preferuara nga punëmarrësi, sa i përket çështjeve operative:</p>
+    <h4>4 Kompensimi </h4>
+    <p>
+        4.1 Punonjësi klasifikohet në Tarif Group 01.<br>
+        Paga bruto në orë është si vijon:<br>
+        Pagesa bruto @Model.PaymentPerHour € Euro
+    </p>
+    <p>4.2 Nëse përbërës të tjerë, të pagave mbi pagat (shtesa, shtesë ose përfitime jo të holla) më shumë se pagesa bruto e dakorduar në pikën 4.1  granti i nënshtrohet revokimit.  Punëdhënësi ruan të drejtën të revokojë ndonjë ose të gjithë përbërësit e pagës së mësipërme të shpërblimit në rast të një kauze materiale me efekt të menjëhershëm për të ardhmen, pas marrjes në konsideratë të duhur.  Ekziston një arsye thelbësore: (a) nëse qarkullimi neto i vitit kalendarik i restorantit në të cilin është punësuar punonjësi ka rënë me të paktën 10% në krahasim me vitin e kaluar kalendarik, ose b) nëse punonjësi ka kryer një shkelje serioze të detyrës;  Siç përshkruhet nën a) më lart, punëdhënësi mund të deklarojë revokimin e tij deri në fund të tremujorit të parë kalendarik të vitit pasardhës, d.m.th.  deri më 31.3.  të vitit pas vitit më të dobët të shitjeve.</p>
+    <p>4.3 Lejet tarifore do të tarifohen për rritje të tarifave, përfshirë retroaktivisht, nëse tarifa tarifore rritet në mënyrë retroaktive.  Ata ngarkohen gjithashtu në një grupim më të lartë</p>
+    <p>4.4 Punëdhënësi ka të drejtë të zvogëlojë përfitimet e paguara, përveç shpërblimit aktual, për periudhat e paaftësisë për të punuar si rezultat i sëmundjes së punonjësit në kuadrin e dispozitave ligjore, në përputhje me Aktin e un 4a të Shpërblimit.</p>
+    <h4>5 Marrëveshje të mëtejshme</h4>
+    <p>Data e hyrjes për llogaritjen e vjetërsisë është ??????? Pas hyrjes në fuqi të kësaj kontrate pune, të gjitha marrëveshjet e tjera kontraktuale, të çfarëdo natyre, do të pushojnë së vlefshmi, me përjashtim të marrëveshjeve ekzistuese vijuese.</p>
+
+    <div class="butonat">
+        <button type="submit" form="registerForm" class="btn btn-primary" formaction="/regjistro">Regjistro</button>
+        <a type="button" class="btn btn-secondary" href="/Home/Index" >Anulo</a>
+    </div>
+</div>
+
+<style>
+    .kontrata {
+        margin: 0 auto;
+        margin-top: 70px;
+        width: 70%;
+    }
+
+    .first {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+        .first img {
+            width: 100px;
+            margin-bottom: 15px;
+        }
+
+    .bottom {
+    }
+</style>
+

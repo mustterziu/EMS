@@ -65,6 +65,25 @@ namespace EMS.Controllers
                 throw;
             }
         }
+        [HttpPost]
+        public IActionResult ShfaqKontraten(Employee employee)
+        {
+            try
+            {
+                logger.LogDebug("ShfaqKontraten()");
+                if (ModelState.IsValid)
+                {
+                   
+                    return View(employee);
+                }
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Error creating new Employee");
+                throw;
+            }
+        }
 
 
         [Authorize]
@@ -205,6 +224,11 @@ namespace EMS.Controllers
                 logger.LogError("Error updating Employee with id: {id}", employee.Id);
                 throw;
             }
+        }
+        public IActionResult ShfaqKontraten() {
+            
+            return View();
+          
         }
     }
 }

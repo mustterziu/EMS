@@ -16,7 +16,7 @@
             <div class="modal-body">
                 Ju lutem afroni kartelen ne RFID Scanner!
                 <div class="collapse" id="collapseExample">
-                    <form method="post" action="/regjistro">
+                    <form id="registerForm" method="post" asp-controller="Employee" asp-action="ShfaqKontraten">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label asp-for="FirstName">Emri</label>
@@ -85,12 +85,14 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Gjenero</button>
+
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Mbyll</button>
                 <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">Vazhdo</button>
+ 
             </div>
         </div>
     </div>
