@@ -80,6 +80,19 @@
             <input asp-for="PaymentPerHour" type="number" class="form-control" id="paymentperHour" value="@employee.PaymentPerHour">
             <span asp-validation-for="PaymentPerHour" class="text-danger"></span>
         </div>
+        @*<div class="form-group col-md-4">
+            <label asp-for="Holiday">Cakto Pushimin</label>
+            <select asp-for="Holday" id="holiday" class="form-control" value="@employee.Holiday">
+                <option value="Monday">E Hane</option>
+                <option value="Tuesday">E Marte</option>
+                <option value="Wednesday">E Merkure</option>
+                <option value="Thursday">E Ejte</option>
+                <option value="Friday">E Premte</option>
+                <option value="Saturday">E Shtune</option>
+                <option value="Sunday">E diell</option>
+            </select>
+            <span asp-validation-for="Schedule" class="text-danger"></span>
+        </div>*@
     </div>
     <button type="submit" class="btn btn-primary">Ruaj</button>
 </form>

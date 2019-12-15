@@ -85,7 +85,6 @@ namespace EMS.Controllers
             }
         }
 
-
         [Authorize]
         [HttpGet("/Kontrollo/{id}")]
         public IActionResult Kontrollo(int id)
