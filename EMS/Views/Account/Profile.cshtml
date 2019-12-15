@@ -1,0 +1,155 @@
+﻿@model EMS.Models.Employee
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Profile Page</title>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link href="~/css/profilepage.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+</head>
+<body>
+    <div class="container emp-profile">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img src="https://cdn1.iconfinder.com/data/icons/avatar-3/512/Manager-512.png" alt="" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="profile-head">
+                        <h5>
+                            @Model.FirstName
+                            @Model.LastName
+                        </h5>
+                        <h6>
+                            @Model.Position
+                        </h6>
+                        <p class="proile-rating">City : <span>@Model.City</span></p>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Profili</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Raporti Im</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <a class="btn btn-info" asp-controller="Account" asp-action="Homepage">Ckycu</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-work">
+                        <p>Te dhenat personale</p>
+                        <label>Emri <strong> @Model.FirstName @Model.LastName </strong></label><br />
+                        <label>Qyteti <strong> @Model.City</label></strong><br />
+                        <label>Gjinia <strong> @Model.Gender</label></strong><br />
+                        <label>Nr Tel <strong> @Model.PhoneNumber</label></strong><br />
+                        <p>Detaje tjera</p>
+                        <label>Pozita <strong>@Model.Position</strong></label><br />
+                        <label>Ndrrimi <strong>@Model.Schedule</strong></label><br />
+
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="tab-content profile-tab" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Data e regjistrimit</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>@Model.DateCreated</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Emri</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>@Model.FirstName @Model.LastName</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nr Tel</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>+ 383 (0) @Model.PhoneNumber</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Qyteti</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>@Model.City, @Model.State</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Pozita</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>@Model.Position</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Pagesa per ore</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>@Model.PaymentPerHour€</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="row">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">Koha e Fillimit</th>
+                                            <th scope="col">Koha e Perfundimit</th>
+                                            <th scope="col">Pagesa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var atd in Model.Attendance)
+                                        {
+                                            <tr>>
+                                                <td>@atd.StartTime</td>
+                                                <td>@atd.EndTime</td>
+                                                <td>@atd.Payment</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
+
+</body>
+</html>
+<!------ Include the above in your HEAD tag ---------->

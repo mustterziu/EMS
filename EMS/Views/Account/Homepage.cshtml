@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kycu</title>
+
+
+    <link href="~/css/employeelogin.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="~/template/plugins/fontawesome-free/css/all.min.css">
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto mt-5">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Sign In</h5>
+                        <p class="lead">Ju lutem afroni kartelen ne RFID Scanner per tu kycur ne sistem.</p>
+                        <form method="post" asp-controller="Account" asp-action="Profile">
+                            <div class="form-group">
+                                <input type="password" name="empId" class="form-control" />
+                            </div>
+
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Kycu</button>
+                            <hr class="my-4">
+
+                            <p class="lead">
+                                <small><a asp-controller="Account" asp-action="Login"> Kliko ketu per tu kycur si administrator!</a></small>
+                            </p>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

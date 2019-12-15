@@ -79,7 +79,7 @@ namespace EMS
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=EmployeeLogin}/{id?}");
+                    pattern: "{controller=Account}/{action=Homepage}/{id?}");
             });
 
 

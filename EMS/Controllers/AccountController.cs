@@ -115,13 +115,13 @@ namespace EMS.Controllers
             return View();
         }
 
-        public IActionResult EmployeeLogin()
+        public IActionResult Homepage()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult LoginEmployee(int empId)
+        public IActionResult Profile(int empId)
         {
             Employee employee = context.Employee.FirstOrDefault(emp => emp.Id == empId);
             return View(employee);
