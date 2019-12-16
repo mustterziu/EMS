@@ -21,16 +21,23 @@
 </head>
 
 <body class="text-center">
+    
     <form class="form-signin" method="post">
-        <img class="mb-4" src="~/template/dist/img/ubtlogo.png" alt="" width="72" height="72">
-        <h1 class="h3 mb-3 font-weight-normal">Ju lutem kycuni!</h1><br />
-        <input type="text" asp-for="Username" class="form-control" placeholder="Perdoruesi: admin" required autofocus>
-        <input type="password" asp-for="Password" class="form-control" placeholder="Fjalekalimi: EMSadmin123" required>
-        <small id="loginHelp" class="form-text text-muted">Perdoruesi dhe fjalekalimi duhet te nderrohen menjehere pas kycjes se pare!</small>
-        <br />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Kycu</button>
+        <div>
+            <img class="mb-4" src="~/template/dist/img/ubtlogo.png" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Ju lutem kycuni!</h1><br />
+            <input type="text" asp-for="Username" class="form-control" placeholder="Perdoruesi: admin" required>
+            <input type="password" asp-for="Password" class="form-control" placeholder="Fjalekalimi: EMSadmin123" required>
+            <small id="loginHelp" class="form-text text-muted">Perdoruesi dhe fjalekalimi duhet te nderrohen menjehere pas kycjes se pare!</small>
+            <br />
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Kycu</button>
+            <div asp-validation-summary="ModelOnly" class="text-danger validation"></div>
+        </div>
         <p class="mt-5 mb-3 text-muted">&copy; EMS2019</p>
+
     </form>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 </body>
 </html>
 

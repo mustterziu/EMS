@@ -54,7 +54,7 @@ namespace EMS.Controllers
                     }
                 }
             }
-            ModelState.AddModelError("", "Failed to login");
+            ModelState.AddModelError("", "Invalid Username or Password");
             return View();
         }
 
