@@ -1,7 +1,8 @@
 ﻿
 @{
     ViewData["Title"] = "ShowReports";
-    var employees = (List<Employee>) ViewData["employees"];
+    var employees = (List<EmployeeRroga>) ViewData["employees"];
+    double totalCost = 0;
 }
 
 <div class="row">
@@ -54,11 +55,12 @@
         {
             @foreach (var emp in employees)
             {
+              totalCost = totalCost + emp.Paga;
                 <tr>
                     <td>@emp.FirstName</td>
                     <td>@emp.LastName</td>
                     <td>@emp.Position</td>
-                    <td>kurgjo per momentin</td>
+                    <td>@emp.Paga</td>
                 </tr>
 
             }
@@ -67,7 +69,7 @@
             </tbody>
     <tfoot>
         <tr>
-            <td colspan="4">Total Shpenzimet</td>
+            <td colspan="4">Total Shpenzimet @totalCost</td>
         </tr>
     </tfoot>
 </table>

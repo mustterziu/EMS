@@ -5,6 +5,7 @@ using EMS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using static Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions;
@@ -157,8 +158,48 @@ namespace EMS.Controllers
         [HttpPost()]
         public IActionResult ShowReports(string periudha, string renditja, string orderby)
         {
-            var employees = from e in context.Employee
-                           select e;
+            DateTime dt = DateTime.Now;
+            DateTime mondayDate = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
+            //var sundayDate = StartOfWeek.AddDays(-1);//DateTime.Now.Subtract(new TimeSpan((int)dt.DayOfWeek, 0, 0, 0));
+            var sundayDate = mondayDate.AddDays(6);
+            //sundayDate = (int)sundayDate.Day;
+            var dataFillimit = "0";
+
+            var dataPerfundimit = "0";
+
+            switch (periudha)
+            {
+                case "Ditore":
+                    dataFillimit = dt.Year+"-"+dt.Month+"-"+dt.Day+ " 00:00:00.0000000";
+
+                    dataPerfundimit = dt.Year + "-" + dt.Month + "-" + dt.Day + " 23:59:59.0000000";
+                    break;
+                case "Javore":
+              
+                   
+                    dataFillimit = dt.Year + "-" + dt.Month + "-" + mondayDate.Day + " 00:00:00.0000000";
+
+                    dataPerfundimit = dt.Year + "-" + dt.Month + "-" +  sundayDate.Day + " 23:59:59.0000000";
+                    break;
+                case
+                   "Mujore":
+                    dataFillimit = dt.Year + "-" + dt.Month + "-01 00:00:00.0000000";
+
+                    dataPerfundimit = dt.Year + "-" + dt.Month + "-30 23:59:59.0000000";
+                    break;
+                case
+                   "Vjetore":
+                    dataFillimit = dt.Year + "-01-01 00:00:00.0000000";
+
+                    dataPerfundimit = dt.Year + "-12-31 23:59:59.0000000";
+                    break;
+            }
+
+            var employees = context.EmployeeRroga.FromSqlRaw($"Select e.Id, e.FirstName , e.LastName , e.Position, sum(DATEDIFF(second , a.StartTime , a.EndTime ) / 3600 * a.Payment ) as Paga " +
+                                                        "from dbo.Employee as e inner join dbo.Attendance as a on e.id = a.EmpId " +
+                                                        "where a.StartTime > \'"+ dataFillimit+ "\' AND  a.EndTime < \'" + dataPerfundimit + "\' " +
+                                                        " group by e.Id,  e.FirstName, e.LastName , e.Position"
+                                                        ) ;
             if(orderby == "AZ")
             {
                 switch (renditja)
@@ -173,7 +214,7 @@ namespace EMS.Controllers
                         employees = employees.OrderBy(e => e.Position);
                         break;
                     case "Pagesa":
-                        //
+                        employees = employees.OrderBy(e => e.Paga);
                         break;
                 }
             }else if(orderby == "ZA"){
@@ -189,7 +230,7 @@ namespace EMS.Controllers
                         employees = employees.OrderByDescending(e => e.Position);
                         break;
                     case "Pagesa":
-                        //
+                        employees = employees.OrderByDescending(e => e.Paga);
                         break;
                 }
             }

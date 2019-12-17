@@ -17,6 +17,8 @@ namespace EMS.Models
         public DbSet<Attendance> Attendance { get; set; }
         public DbSet<Employee> Employee { get; set; }
 
+        public DbSet<EmployeeRroga> EmployeeRroga { get; set; }
+
         public override int SaveChanges()
         {
             AddTimestamps();
@@ -27,6 +29,8 @@ namespace EMS.Models
         {
             return base.SaveChanges();
         }
+
+
 
         public void AddTimestamps()
         {
