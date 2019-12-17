@@ -8,6 +8,7 @@ namespace EMS.Models
         public Employee()
         {
             Attendance = new HashSet<Attendance>();
+            Payments = new HashSet<Payment>();
         }
 
         public int Id { get; set; }
@@ -44,6 +45,10 @@ namespace EMS.Models
         
         [Required (ErrorMessage = "Ju lutem caktoni pagen!")]
         public double PaymentPerHour { get; set; }
+
+        public string Holiday { get; set; }
+        public bool Status { get; set; }
         public ICollection<Attendance> Attendance { get; set; }
+        public ICollection<Payment> Payments { get; set; }
     }
 }
