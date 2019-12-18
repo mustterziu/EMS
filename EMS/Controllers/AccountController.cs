@@ -1,12 +1,17 @@
-﻿using System.Linq;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using EMS.Models;
 using EMS.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace EMS.Controllers
@@ -17,13 +22,15 @@ namespace EMS.Controllers
         private readonly SignInManager<Admin> signInManager;
         private readonly UserManager<Admin> userManager;
         private readonly EMSContext context;
+        private readonly IConfiguration config;
 
-        public AccountController(ILogger<AccountController> logger, SignInManager<Admin> signInManager, UserManager<Admin> userManager, EMSContext context)
+        public AccountController(ILogger<AccountController> logger, SignInManager<Admin> signInManager, UserManager<Admin> userManager, EMSContext context, IConfiguration configuration)
         {
             this.logger = logger;
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.context = context;
+            this.config = configuration;
         }
 
         public IActionResult Login()
@@ -137,6 +144,44 @@ namespace EMS.Controllers
             };
             IdentityResult result = await userManager.CreateAsync(user, "UserTest123!!");
             return Ok("User: UserTest, Password: UserTest123!!");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetToken([FromBody]Login login)
+        {
+            if (ModelState.IsValid)
+            {
+                Admin user = await userManager.FindByNameAsync(login.Username);
+                SignInResult result = await signInManager.CheckPasswordSignInAsync(user, login.Password, false);
+                
+                if (result.Succeeded)
+                {
+                    Claim[] claims = new[]
+                    {
+                        new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
+                    };
+
+                    SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Tokens:Key"]));
+                    SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                    JwtSecurityToken token = new JwtSecurityToken(
+                        config["Tokens:Issuer"],
+                        config["Tokens:Audience"],
+                        claims,
+                        expires: DateTime.UtcNow.AddMinutes(60),
+                        signingCredentials: credentials
+                        );
+
+                    var results = new
+                    {
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        expiration = token.ValidTo
+                    };
+                    return Created("", results);
+                }
+            }
+
+            return BadRequest();
         }
     }
 }
