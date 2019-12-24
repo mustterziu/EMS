@@ -34,7 +34,7 @@ namespace EMS.Controllers
             if (ModelState.IsValid)
             {
                 Employee emp = context.Employee.Add(employee).Entity;
-                context.DefaultSaveChanges();
+                context.SaveChanges();
                 return Ok("employee with id: " + emp.Id + " was added");
             } 
             else
@@ -47,7 +47,7 @@ namespace EMS.Controllers
         public ActionResult Put([FromBody]Employee employee)
         {
             var emp = context.Update(employee).Entity;
-            context.DefaultSaveChanges();
+            context.SaveChanges();
             return Ok(emp);
         }
 
@@ -56,7 +56,7 @@ namespace EMS.Controllers
         {
             Employee employee = context.Employee.Find(int.Parse(id));
             context.Employee.Remove(employee);
-            context.DefaultSaveChanges();
+            context.SaveChanges();
             return Ok(employee);
         }
     }

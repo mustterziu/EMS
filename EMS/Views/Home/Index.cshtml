@@ -23,13 +23,13 @@
     <div class="col-lg-4 col-6">
         <div class="small-box bg-gradient-success">
             <div class="inner">
-                <h3>4</h3>
+                <h3>@ViewData["punetoretAktiv"]</h3>
                 <p>Punetoret aktiv</p>
             </div>
             <div class="icon">
                 <i class="fas fa-user-plus"></i>
             </div>
-            <a href="#" class="small-box-footer">
+            <a asp-controller="Employee" asp-action="ActiveEmployees" class="small-box-footer">
                 Shfaq Listen <i class="fas fa-arrow-circle-right"></i>
             </a>
         </div>
@@ -46,7 +46,7 @@
             <div class="icon">
                 <i class="fas fa-user"></i>
             </div>
-            <a href="/AllEmployees" class="small-box-footer">
+            <a asp-controller="Employee" asp-action="Allemployees" class="small-box-footer">
                 Shfaq Listen <i class="fas fa-arrow-circle-right"></i>
             </a>
         </div>
@@ -81,21 +81,11 @@
                 <td>@atd.Emp.Position</td>
                 <td>@atd.Payment</td>
                 <td class="row pl-4">
-                    <div class="icon mr-3">
-                        <a class="btn btn-outline-info" asp-controller="Employee" asp-action="ShowEmployee" asp-route-id="@atd.EmpId" alt="Ndrysho">
-                            <i class="fas fa-user-edit"></i>
+                    <div class="icon mr-2">
+                        <a asp-controller="Employee" asp-action="Kontrollo" asp-route-id="@atd.Emp.Id" class="btn btn-primary" alt="Kontrollo">
+                            <i class="fas fa-info-circle"></i>
                         </a>
                     </div>
-
-                    <form method="post" asp-controller="Employee" asp-action="DeleteEmployee">
-                        <input type="hidden" name="id" value="@atd.EmpId" />
-                        <div class="icon">
-                            <button class="btn btn-outline-danger" alt="Fshij">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </form>
-
                 </td>
             </tr>
         }
