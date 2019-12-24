@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "ShowReports";
-    var employees = (List<EmployeeRroga>) ViewData["employees"];
+    var employees = (List<EmployeeRroga>)ViewData["employees"];
     double totalCost = 0;
 }
 
@@ -41,13 +41,14 @@
 </div>
 
 
-<table class="table">
-    <thead class="thead-dark">
+
+<table id="example" class="table table-striped table-bordered" style="width:100%">
+    <thead>
         <tr>
-            <th scope="col">Emri</th>
-            <th scope="col">Mbiemri</th>
-            <th scope="col">Pozita</th>
-            <th scope="col">Pagesa</th>
+            <th>Emri</th>
+            <th>Mbiemri</th>
+            <th>Pozita</th>
+            <th>Pagesa</th>
         </tr>
     </thead>
     <tbody>
@@ -55,7 +56,7 @@
         {
             @foreach (var emp in employees)
             {
-              totalCost = totalCost + emp.Paga;
+                totalCost = totalCost + emp.Paga;
                 <tr>
                     <td>@emp.FirstName</td>
                     <td>@emp.LastName</td>
@@ -65,11 +66,22 @@
 
             }
         }
-
-            </tbody>
+    </tbody>
     <tfoot>
         <tr>
             <td colspan="4">Total Shpenzimet @totalCost</td>
         </tr>
     </tfoot>
 </table>
+
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+
+
+    </script>
+}

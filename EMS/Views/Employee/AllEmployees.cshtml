@@ -14,47 +14,50 @@
         </button>
     </div>
 }
-<table class="table">
-    <thead class="thead-dark">
-    <tr>
-        <th scope="col">Emri</th>
-        <th scope="col">Mbiemri</th>
-        <th scope="col">Vendi</th>
-        <th scope="col">Gjinia</th>
-        <th scope="col">Nr Tel</th>
-        <th scope="col1">Operacionet</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var emp in employees)
-    {
-        <tr>
-            <td>@emp.FirstName</td>
-            <td>@emp.LastName</td>
-            <td>@emp.City</td>
-            <td>@emp.Gender</td>
-            <th scope="row">@emp.PhoneNumber</th>
-            <td class="row pl-4">
-                <div class="icon mr-2">
-                    <a asp-controller="Employee" asp-action="Kontrollo" asp-route-id="@emp.Id" class="btn btn-primary" alt="Kontrollo">
-                        <i class="fas fa-info-circle"></i>
-                    </a>
-                </div>
-                @* <form method="post" asp-controller="Employee" asp-action="DeleteEmployee"> *@
-                <input type="hidden" name="id" value="@emp.Id"/>
 
-                <div class="icon">
-                    <a href="#deleteModal" id="deleteModalBtn" class="btn btn-danger" alt="Fshij" data-toggle="modal" data-target="#deleteModal" data-empid="@emp.Id">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                </div>
-                @* </form> *@
 
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Emri</th>
+                <th>Mbiemri</th>
+                <th>Vendi</th>
+                <th>Gjinia</th>
+                <th>Nr. Telefonit</th>
+                <th>Operacionet</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in employees)
+            {
+            <tr>
+                <td>@emp.FirstName</td>
+                <td>@emp.LastName</td>
+                <td>@emp.City</td>
+                <td>@emp.Gender</td>
+                <td>@emp.PhoneNumber</td>
+                <td class="row pl-4">
+                    <div class="icon mr-2">
+                        <a asp-controller="Employee" asp-action="Kontrollo" asp-route-id="@emp.Id" class="btn btn-primary" alt="Kontrollo">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                    </div>
+                    <form method="post" asp-controller="Employee" asp-action="DeleteEmployee">
+                        <input type="hidden" name="id" value="@emp.Id" />
+
+                        <div class="icon">
+                            <a href="#deleteModal" id="deleteModalBtn" class="btn btn-danger" alt="Fshij" data-toggle="modal" data-target="#deleteModal" data-empid="@emp.Id">
+                                <i class="fas fa-trash"></i>
+                            </a>
+
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            }
+    </table>
+
 
 <partial name="Partials/FshijModal"/>
 
@@ -64,5 +67,12 @@ jQuery(document).on("click", "#deleteModalBtn", function () {
      var id = jQuery(this).data('empid');
      jQuery(".modal-body #id").val(id);
 });
+
+
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+
+
 </script>
 }
