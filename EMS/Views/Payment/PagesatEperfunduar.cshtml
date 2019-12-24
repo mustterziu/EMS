@@ -1,4 +1,4 @@
-﻿
+﻿@model EMS.Models.Employee
 @{
     ViewData["Title"] = "PagesatEperfunduar";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,12 +14,19 @@
             <th scope="col">Data e pageses</th>
             <th scope="col">Data e kryerjes se pageses</th>
             <th scope="col">Pagesa Neto</th>
-            <th scope="col">Pagesa Bruto</th>       
+            <th scope="col">Pagesa Bruto</th>
+            <th scope="col">Action</th>
     </thead>
     <tbody>
-        <td>a</td>
-        <td>b</td>
-        <td>c</td>
-        <td>d</td>
+        @foreach(Payment p in Model.Payments)
+        {
+            <tr>
+                <td>@p.startDate</td>
+                <td>@p.endDate</td>
+                <td>@p.paymentNeto</td>
+                <td>@p.paymentBruto</td>
+                <td><a class="btn btn-danger" asp-controller="Payment" asp-action="DeletePayment" asp-route-id="@p.Id">Delete</a></td>
+            </tr>
+        }
     </tbody>
 </table>

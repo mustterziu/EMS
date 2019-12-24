@@ -28,6 +28,20 @@ namespace EMS.Controllers
             return Ok(context.Employee.ToList());
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<Employee> Get(int id)
+        {
+            Employee employee = context.Employee.Find(id);
+            if (employee != null)
+            {
+                return Ok(employee);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpPost]
         public ActionResult Post([FromBody]Employee employee)
         {

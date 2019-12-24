@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.Migrations
 {
     [DbContext(typeof(EMSContext))]
-    [Migration("20191217103407_payments")]
+    [Migration("20191223182256_payments")]
     partial class payments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,14 +102,14 @@ namespace EMS.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("Payment")
-                        .HasColumnType("float");
-
                     b.Property<int?>("PaymentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<double?>("payment")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -185,6 +185,30 @@ namespace EMS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employee");
+                });
+
+            modelBuilder.Entity("EMS.Models.EmployeeRroga", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Paga")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Position")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeRroga");
                 });
 
             modelBuilder.Entity("EMS.Models.Payment", b =>
@@ -358,7 +382,7 @@ namespace EMS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EMS.Models.Payment", null)
+                    b.HasOne("EMS.Models.Payment", "Payment")
                         .WithMany("days")
                         .HasForeignKey("PaymentId");
                 });

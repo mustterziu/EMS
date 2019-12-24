@@ -1,4 +1,5 @@
-﻿
+﻿@model EMS.Models.Payment
+
 @{
     ViewData["Title"] = "Fatura";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -22,13 +23,13 @@
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 text-right">
                     <p>
-                        <p>Pagesa per periudhen:</p>
+                    <p>Pagesa per periudhen:</p>
                     </p>
                     <p>
-                        <em>Prej: 1 Nentor, 2019</em>
+                        <em>Prej: @Model.startDate</em>
                     </p>
                     <p>
-                        <em>Deri: 15 Nentor, 2019</em>
+                        <em>Deri: @Model.endDate</em>
                     </p>
                 </div>
             </div>
@@ -72,16 +73,16 @@
                             </td>
                             <td class="text-center">
                                 <p>
-                                    <strong>$20</strong>
+                                    <strong>$@Model.paymentBruto</strong>
                                 </p>
                                 <p>
-                                    <strong>%18</strong>
+                                    <strong>%30</strong>
                                 </p>
                             </td>
                         </tr>
                         <tr>
 
-                            <td class="text-right"><h4><strong>Total: </strong></h4></td>
+                            <td class="text-right"><h4><strong>Total: @Model.paymentNeto</strong></h4></td>
                             <td class="text-center text-danger"><h4><strong>$13.53</strong></h4></td>
                         </tr>
                     </tbody>

@@ -7,6 +7,11 @@ namespace EMS.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.RenameColumn(
+                name: "Payment",
+                table: "Attendance",
+                newName: "payment");
+
             migrationBuilder.AddColumn<string>(
                 name: "Holiday",
                 table: "Employee",
@@ -22,6 +27,22 @@ namespace EMS.Migrations
                 name: "PaymentId",
                 table: "Attendance",
                 nullable: true);
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeRroga",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Position = table.Column<string>(nullable: true),
+                    Paga = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeRroga", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Payment",
@@ -73,6 +94,9 @@ namespace EMS.Migrations
                 table: "Attendance");
 
             migrationBuilder.DropTable(
+                name: "EmployeeRroga");
+
+            migrationBuilder.DropTable(
                 name: "Payment");
 
             migrationBuilder.DropIndex(
@@ -90,6 +114,11 @@ namespace EMS.Migrations
             migrationBuilder.DropColumn(
                 name: "PaymentId",
                 table: "Attendance");
+
+            migrationBuilder.RenameColumn(
+                name: "payment",
+                table: "Attendance",
+                newName: "Payment");
         }
     }
 }
