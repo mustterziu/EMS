@@ -1,11 +1,11 @@
-﻿@model EMS.Models.Payment
-
-@{
+﻿@{
     ViewData["Title"] = "Fatura";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Active = "Kontrollo";
+    Payment payment = (Payment)ViewData["payment"];
 }
 
+@payment.startDate
 <div class="container">
     <div class="row">
         <div class="well col-md-6 offset-3 border-dark mb-5">
@@ -26,10 +26,10 @@
                     <p>Pagesa per periudhen:</p>
                     </p>
                     <p>
-                        <em>Prej: @Model.startDate</em>
+                        <em>Prej: </em>
                     </p>
                     <p>
-                        <em>Deri: @Model.endDate</em>
+                        <em>Deri:  </em>
                     </p>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                             </td>
                             <td class="text-center">
                                 <p>
-                                    <strong>$@Model.paymentBruto</strong>
+                                    <strong>$</strong>
                                 </p>
                                 <p>
                                     <strong>%30</strong>
@@ -82,14 +82,14 @@
                         </tr>
                         <tr>
 
-                            <td class="text-right"><h4><strong>Total: @Model.paymentNeto</strong></h4></td>
+                            <td class="text-right"><h4><strong>Total: </strong></h4></td>
                             <td class="text-center text-danger"><h4><strong>$13.53</strong></h4></td>
                         </tr>
                     </tbody>
                 </table>
                 <button type="button" class="btn btn-success btn-lg btn-block">
                     Perfundo Pagesen   <span class="glyphicon glyphicon-chevron-right"></span>
-                </button></td>
+                </button>
 
             </div>
         </div>

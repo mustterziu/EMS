@@ -35,14 +35,15 @@ namespace EMS.Controllers
         [HttpGet]
         public IActionResult Fatura(int id)
         {
-            Payment payment = context.Payment.Find(id);  
-            return View(payment);
+            Payment payment = context.Payment.Find(id);
+            ViewData["payment"] = payment;
+            return View();
         }
 
         [HttpPost]
         public IActionResult Payment(int id, string time)
         {   
-            int hours = 80; //default minimum hours 
+            int minimumPayment = 80; //default minimum payment 
             DateTime endTime = DateTime.Parse(time);
 
             Employee employee = context.Employee.Include(employee => employee.Attendance).First(emp => emp.Id == id);
@@ -51,7 +52,13 @@ namespace EMS.Controllers
 
             //TimeSpan timeSpan = list.LastOrDefault().EndTime.GetValueOrDefault().Subtract(list.FirstOrDefault().StartTime);
             TimeSpan timeSpan = new TimeSpan();
-            
+
+            double totalPayment = 0.0;
+            list.ForEach(atd =>
+            {
+                totalPayment += atd.payment.GetValueOrDefault();
+            });
+
             if (list.Count != 0)
             {
                 list.ForEach(atd =>
@@ -68,7 +75,7 @@ namespace EMS.Controllers
                 return View();
             }
 
-            if (!(timeSpan.TotalHours <= hours))
+            if (!(totalPayment <= minimumPayment))
             {
                 Payment payment = new Payment
                 {
@@ -79,11 +86,7 @@ namespace EMS.Controllers
                     paid = false //true after ticket is printed
                 };
 
-                double totalPayment = 0.0;
-                list.ForEach(atd =>
-                {
-                    totalPayment += atd.payment.GetValueOrDefault();
-                });
+                
 
                 payment.paymentBruto = (float)totalPayment;
                 payment.paymentNeto = (float)(totalPayment - (totalPayment * 0.30));//-30% 
