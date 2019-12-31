@@ -17,6 +17,8 @@ namespace EMS.Models
         public DbSet<Attendance> Attendance { get; set; }
         public DbSet<Employee> Employee { get; set; }
 
+        public DbSet<Payment> Payment { get; set; }
+
         public DbSet<EmployeeRroga> EmployeeRroga { get; set; }
 
         public override int SaveChanges()

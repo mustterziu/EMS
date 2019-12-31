@@ -1,34 +1,42 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Fatura";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Active = "Kontrollo";
+    Payment payment = (Payment)ViewData["payment"];
+    Employee employee = payment.employee;
 }
 
 <div class="container">
+   
     <div class="row">
         <div class="well col-md-6 offset-3 border-dark mb-5">
+            @if (payment.paid)
+            {
+                <div class="alert alert-primary" role="alert">
+                    Fatura është paguar me datë: @payment.paymentDate.GetValueOrDefault().ToString("dd MMMM yyyy")
+                </div>
+            }
             <div class="row">
                 <div class="col-xs-6 col-sm-6 col-md-6">
                     <address>
-                        <strong>Mustafa Terzija</strong>
+                        <strong>@employee.FirstName @employee.LastName</strong>
                         <br>
-                        Pozita: CEO
+                        Pozita: @employee.Position
                         <br>
-                        Gjinia: M
+                        Gjinia: @employee.Gender
                         <br>
-                        <abbr title="Phone">Tel:</abbr> 044 xxx xxx
+                        <abbr title="Phone">Tel:</abbr> @employee.PhoneNumber
                     </address>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 text-right">
                     <p>
-                        <p>Pagesa per periudhen:</p>
+                    <p>Pagesa per periudhen:</p>
+
+                    <p>
+                        <em>Prej: @payment.startDate.ToString("dd-MM-yyyy")</em>
                     </p>
                     <p>
-                        <em>Prej: 1 Nentor, 2019</em>
-                    </p>
-                    <p>
-                        <em>Deri: 15 Nentor, 2019</em>
+                        <em>Deri: @payment.endDate.ToString("dd-MM-yyyy")</em>
                     </p>
                 </div>
             </div>
@@ -36,7 +44,6 @@
                 <div class="text-center">
                     <h1>Fatura</h1>
                 </div>
-                </span>
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -46,18 +53,18 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="col-md-9"><em>Pagesa</em></h4></td>
-                            <td class="col-md-1" style="text-align: center"> 10 </td>
+                            <td class="col-md-9"><em>Pagesa</em></td>
+                            <td class="col-md-1" style="text-align: center"> @payment.paymentNeto </td>
 
                         </tr>
                         <tr>
-                            <td class="col-md-9"><em>Pagesa Bruto</em></h4></td>
-                            <td class="col-md-1" style="text-align: center"> 8 </td>
+                            <td class="col-md-9"><em>Pagesa Bruto</em></td>
+                            <td class="col-md-1" style="text-align: center"> @payment.paymentBruto </td>
 
                         </tr>
                         <tr>
-                            <td class="col-md-9"><em>Pagesa Neto</em></h4></td>
-                            <td class="col-md-1" style="text-align: center"> 2 </td>
+                            <td class="col-md-9"><em>Pagesa Neto</em></td>
+                            <td class="col-md-1" style="text-align: center"> @payment.paymentNeto </td>
 
                         </tr>
                         <tr>
@@ -72,25 +79,48 @@
                             </td>
                             <td class="text-center">
                                 <p>
-                                    <strong>$20</strong>
+                                    <strong>$</strong>
                                 </p>
                                 <p>
-                                    <strong>%18</strong>
+                                    <strong>%30</strong>
                                 </p>
                             </td>
                         </tr>
                         <tr>
 
                             <td class="text-right"><h4><strong>Total: </strong></h4></td>
-                            <td class="text-center text-danger"><h4><strong>$13.53</strong></h4></td>
+                            <td class="text-center text-danger"><h4><strong>$@payment.paymentNeto</strong></h4></td>
                         </tr>
                     </tbody>
                 </table>
-                <button type="button" class="btn btn-success btn-lg btn-block">
-                    Perfundo Pagesen   <span class="glyphicon glyphicon-chevron-right"></span>
-                </button></td>
-
             </div>
+
+            @if (payment.paid)
+            {
+                <div class="row justify-content-center">
+                    <button type="button" class="btn btn-secondary">
+                        Printo Faturen
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="row justify-content-between">
+                    <form asp-controller="Payment" asp-action="ConfirmPayment" method="post">
+                        <input type="hidden" name="id" value="@payment.Id" />
+                        <button type="submit" class="btn btn-success btn-lg btn-block">
+                            Perfundo Pagesen   <span class="glyphicon glyphicon-chevron-right"></span>
+                        </button>
+                    </form>
+                    <form asp-controller="Payment" asp-action="CancelPayment" method="post">
+                        <input type="hidden" name="id" value="@payment.Id" />
+
+                        <button type="submit" class="btn btn-danger btn-lg btn-block">
+                            Anullo Pagesen   <span class="glyphicon glyphicon-chevron-right"></span>
+                        </button>
+                    </form>
+                </div>
+            }
         </div>
     </div>
 

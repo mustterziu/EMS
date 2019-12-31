@@ -70,7 +70,7 @@ namespace EMS.Controllers
                     attendance.EndTime = DateTime.Now;
                     TimeSpan test = (TimeSpan)(attendance.EndTime - attendance.StartTime);
                     double hours = test.TotalHours;
-                    attendance.Payment = Math.Round((hours * employee.PaymentPerHour), 3);
+                    attendance.payment = Math.Round((hours * employee.PaymentPerHour), 3);
                     context.Attendance.Update(attendance);
                     context.DefaultSaveChanges();
 
@@ -79,7 +79,7 @@ namespace EMS.Controllers
                         message = "Checked out sucessfuly",
                         startTime = attendance.StartTime.ToShortTimeString(),
                         endTime = attendance.EndTime?.ToShortTimeString(),
-                        payment = attendance.Payment.GetValueOrDefault(),
+                        payment = attendance.payment.GetValueOrDefault(),
                     });
                 }catch(InvalidOperationException e)
                 {

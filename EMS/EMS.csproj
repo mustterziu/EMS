@@ -7,6 +7,7 @@
     <RootNamespace>EMS</RootNamespace>
     <Company>EMS</Company>
     <Product>EMS</Product>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Migrations\20191217102700_payments.cs" />

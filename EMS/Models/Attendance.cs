@@ -8,7 +8,9 @@ namespace EMS.Models
         public int EmpId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
-        public double? Payment { get; set; }
+        public double? payment { get; set; }
         public Employee Emp { get; set; }
+        public Payment? Payment { get; set; }
+        public int? PaymentId {get; set;}
     }
 }

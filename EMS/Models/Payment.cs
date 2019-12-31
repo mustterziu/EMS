@@ -19,7 +19,9 @@ namespace EMS.Models
         public float paymentNeto { get; set; }
         public float paymentBruto { get; set; }
         public bool paid { get; set; }
+        public DateTime? paymentDate { get; set; }
 
         public ICollection<Attendance> days { get; set; }
+        public int employeeId { get; set; }
     }
 }

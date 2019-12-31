@@ -7,6 +7,11 @@ namespace EMS.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.RenameColumn(
+                name: "Payment",
+                table: "Attendance",
+                newName: "payment");
+
             migrationBuilder.AddColumn<string>(
                 name: "Holiday",
                 table: "Employee",
@@ -24,17 +29,34 @@ namespace EMS.Migrations
                 nullable: true);
 
             migrationBuilder.CreateTable(
+                name: "EmployeeRroga",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Position = table.Column<string>(nullable: true),
+                    Paga = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeRroga", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Payment",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    employeeId = table.Column<int>(nullable: true),
                     startDate = table.Column<DateTime>(nullable: false),
                     endDate = table.Column<DateTime>(nullable: false),
                     paymentNeto = table.Column<float>(nullable: false),
                     paymentBruto = table.Column<float>(nullable: false),
-                    paid = table.Column<bool>(nullable: false)
+                    paid = table.Column<bool>(nullable: false),
+                    paymentDate = table.Column<DateTime>(nullable: true),
+                    employeeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,7 +66,7 @@ namespace EMS.Migrations
                         column: x => x.employeeId,
                         principalTable: "Employee",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -73,6 +95,9 @@ namespace EMS.Migrations
                 table: "Attendance");
 
             migrationBuilder.DropTable(
+                name: "EmployeeRroga");
+
+            migrationBuilder.DropTable(
                 name: "Payment");
 
             migrationBuilder.DropIndex(
@@ -90,6 +115,11 @@ namespace EMS.Migrations
             migrationBuilder.DropColumn(
                 name: "PaymentId",
                 table: "Attendance");
+
+            migrationBuilder.RenameColumn(
+                name: "payment",
+                table: "Attendance",
+                newName: "Payment");
         }
     }
 }
