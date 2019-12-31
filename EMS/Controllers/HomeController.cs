@@ -29,8 +29,10 @@ namespace EMS.Controllers
         {
             ViewBag.Active = "Kryefaqja";
             int nrPunetorve = context.Employee.Count();
+            int punetoretAktiv = context.Employee.Where(emp => emp.Status == true).Count();
             ViewData["nrPunetoreve"] = nrPunetorve;
-            List<Attendance> attendance = context.Attendance.Where(a => a.StartTime >= DateTime.Parse("2019-10-25 00:00:00.000") && a.StartTime <= DateTime.Parse("2019-10-25 23:59:59.000")).Include(a => a.Emp).ToList();
+            ViewData["punetoretAktiv"] = punetoretAktiv;
+            List<Attendance> attendance = context.Attendance.Where(a => a.StartTime.Date == DateTime.Now.Date).Include(a => a.Emp).ToList();
             ViewData["attendance"] = attendance;
 
             return View();

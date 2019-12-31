@@ -5,7 +5,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="regjistroModal" tabindex="-1" role="dialog" aria-labelledby="regjistroModalTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="regjistroModalTitle">Kujdes!</h5>
@@ -18,17 +18,37 @@
                 <div class="collapse" id="collapseExample">
                     <form id="registerForm" method="post" asp-controller="Employee" asp-action="ShfaqKontraten">
                         <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
+                                <label asp-for="PersonalNumber">Numri Personal</label>
+                                <input asp-for="PersonalNumber" type="number" class="form-control" id="personalNumber" placeholder="123xxxxxxxx">
+                                <span asp-validation-for="PersonalNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4">
                                 <label asp-for="FirstName">Emri</label>
-                                <input asp-for="FirstName" type="text" class="form-control" id="firstName" placeholder="Filan">
+                                <input asp-for="FirstName" type="text" class="form-control id="firstName" placeholder="Filan">
                                 <span asp-validation-for="FirstName" class="text-danger"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <label asp-for="LastName">Mbiemri</label>
                                 <input asp-for="LastName" type="text" class="form-control" id="lastName" placeholder="Fisteku">
                                 <span asp-validation-for="LastName" class="text-danger"></span>
                             </div>
+
                         </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label asp-for="Birthday">Ditelindja</label>
+                                <input asp-for="Birthday" type="date" class="form-control" id="birthday">
+                                <span asp-validation-for="Birthday" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label asp-for="Email">Email</label>
+                                <input asp-for="Email" type="email" class="form-control" id="email" placeholder="email@example.com">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label asp-for="PhoneNumber">Numri Telefonit</label>
@@ -45,22 +65,55 @@
                                 <span asp-validation-for="Gender" class="text-danger"></span>
                             </div>
                         </div>
+
                         <div class="form-row">
                             <div class="form-group col-md-6">
+                                <label for="Banka">Banka</label>
+                                <select asp-for="Banka" id="banla" class="form-control">
+                                    <option selected value="">Zgjidh...</option>
+                                    <option value="Teb">TEB</option>
+                                    <option value="Bkt">BKT</option>
+                                    <option value="Bpb">BPB</option>
+                                    <option value="Raiffeisen">Raiffeisen</option>
+                                    <option value="BankaEkonomike">BankaEkonomike</option>
+                                    <option value="ProCredit">ProCredit</option>
+                                </select>
+                                <span asp-validation-for="Banka" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label asp-for="NrBankes">Numri i Gjirollogarise</label>
+                                <input asp-for="NrBankes" type="number" class="form-control" id="nrbankes" placeholder="xxxxxxxxxxxxxxxxxx">
+                                <span asp-validation-for="NrBankes" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
                                 <label asp-for="City">Qyteti</label>
                                 <input asp-for="City" type="text" class="form-control" id="inputCity" placeholder="Prizren">
                                 <span asp-validation-for="City" class="text-danger"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <label for="inputState">Shteti</label>
                                 <select asp-for="State" id="state" class="form-control">
                                     <option selected value="">Zgjidh...</option>
-                                    <option value="ks">Kosove</option>
-                                    <option value="al">Shqiperi</option>
-                                    <option value="mne">Mali i Zi</option>
-                                    <option value="mk">Maqedoni</option>
+                                    <option value="Kosove">Kosove</option>
+                                    <option value="Shqiperi">Shqiperi</option>
+                                    <option value="Mali i Zi">Mali i Zi</option>
+                                    <option value="Maqedoni">Maqedoni</option>
                                 </select>
                                 <span asp-validation-for="State" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label asp-for="Holiday">Pushimi</label>
+                                <select asp-for="Holiday" id="holiday" class="form-control">
+                                    <option value="E hene">E hene</option>
+                                    <option value="E marte">E marte</option>
+                                    <option value="E merkure">E merkure</option>
+                                    <option value="E ejte">E ejte</option>
+                                    <option value="E premte">E premte</option>
+                                    <option value="E shtune">E shtune</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-row">
@@ -85,14 +138,13 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Gjenero</button>
-
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Mbyll</button>
                 <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">Vazhdo</button>
- 
+
             </div>
         </div>
     </div>

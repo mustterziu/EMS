@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace EMS.Models
@@ -29,8 +30,25 @@ namespace EMS.Models
         [Required (ErrorMessage = "Ju lutem shenoni numrin e telefonit!")]
         public long PhoneNumber { get; set; }
         
+        [Required(ErrorMessage = "Ju lutem shenoni numrin personal!")]
+        [RegularExpression(@"\d{10}", ErrorMessage = "Numri juaj personal duhet te permbaje 10 shifra!")]
+        public long PersonalNumber { get; set; }
+
+        [Required (ErrorMessage = "Ju lutem shtoni daten e lindjes")]
+        public DateTime Birthday { get; set; }
+
+        [Required(ErrorMessage = "Ju lutem caktoni banken")]
+        public string Banka { get; set; }
+
+        [Required(ErrorMessage = "Ju lutem shtoni numrin e bankes")]
+        [RegularExpression(@"\d{16}", ErrorMessage = "Numri juaj i gjirollogarise duhet ti permbaje 16 shifra!")]
+        public long NrBankes { get; set; }
+
+        [Required(ErrorMessage = "Ju lutem shtoni email")]
+        public string Email { get; set; }
+
         [Required (ErrorMessage = "Ju lutem shenoni Qytetin!")]
-        [StringLength(15, MinimumLength = 3)]
+        
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Perdorni vetem shkronja, ju lutem!")]
         public string City { get; set; }
         

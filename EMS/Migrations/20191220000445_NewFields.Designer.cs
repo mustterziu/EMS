@@ -4,14 +4,16 @@ using EMS.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EMS.Migrations
 {
     [DbContext(typeof(EMSContext))]
-    partial class EMSContextModelSnapshot : ModelSnapshot
+    [Migration("20191220000445_NewFields")]
+    partial class NewFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,14 +102,14 @@ namespace EMS.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<double?>("Payment")
+                        .HasColumnType("float");
+
                     b.Property<int?>("PaymentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<double?>("payment")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -235,7 +237,7 @@ namespace EMS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("employeeId")
+                    b.Property<int?>("employeeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("endDate")
@@ -246,9 +248,6 @@ namespace EMS.Migrations
 
                     b.Property<float>("paymentBruto")
                         .HasColumnType("real");
-
-                    b.Property<DateTime?>("paymentDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<float>("paymentNeto")
                         .HasColumnType("real");
@@ -402,7 +401,7 @@ namespace EMS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EMS.Models.Payment", "Payment")
+                    b.HasOne("EMS.Models.Payment", null)
                         .WithMany("days")
                         .HasForeignKey("PaymentId");
                 });
@@ -411,9 +410,7 @@ namespace EMS.Migrations
                 {
                     b.HasOne("EMS.Models.Employee", "employee")
                         .WithMany("Payments")
-                        .HasForeignKey("employeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("employeeId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -12,6 +12,7 @@ using static Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions;
 
 namespace EMS.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly ILogger<HomeController> logger;
@@ -25,7 +26,6 @@ namespace EMS.Controllers
             this.userManager = userManager;
         }
 
-        [Authorize]
         [HttpGet("/AllEmployees")]
         public IActionResult Allemployees()
         {
@@ -43,7 +43,22 @@ namespace EMS.Controllers
             }
         }
 
-        [Authorize]
+        public IActionResult ActiveEmployees()
+        {
+            try
+            {
+                logger.LogDebug("Showing ActiveEmployees()");
+                List<Employee> employees = context.Employee.Where(emp => emp.Status == true).ToList();
+                ViewData["employees"] = employees;
+                return View();
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Error showing ActiveEmployees", e);
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
         [HttpPost("/regjistro")]
         public IActionResult Regjistro(Employee employee)
         {
@@ -52,6 +67,11 @@ namespace EMS.Controllers
                 logger.LogDebug("Regjistro()");
                 if (ModelState.IsValid)
                 {
+                    employee.Status = true;
+
+                    context.Entry(employee).Property("CreatedBy").IsModified = false;
+                    context.Entry(employee).Property("DateCreated").IsModified = false;
+
                     context.Employee.Add(employee);
                     context.SaveChanges();
                     logger.LogDebug("New Employee was created by " + User.Identity.Name);
@@ -62,7 +82,7 @@ namespace EMS.Controllers
             }
             catch (Exception e)
             {
-                logger.LogError("Error creating new Employee");
+                logger.LogError("Error creating new Employee", e);
                 return RedirectToAction("Error", "Home");
             }
         }
@@ -81,12 +101,11 @@ namespace EMS.Controllers
             }
             catch (Exception e)
             {
-                logger.LogError("Error creating new Employee");
+                logger.LogError("Error creating new Employee", e);
                 return RedirectToAction("Error", "Home");
             }
         }
 
-        [Authorize]
         [HttpGet("/Kontrollo/{id}")]
         public IActionResult Kontrollo(int id)
         {
@@ -104,7 +123,6 @@ namespace EMS.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet("/employee/{id}")]
         public IActionResult ShowEmployee(int id)
         {
@@ -114,7 +132,7 @@ namespace EMS.Controllers
                 Employee employee = context.Employee.Find(id);
                 ViewData["employee"] = employee;
                 ViewData["updated"] = false;
-                return View();
+                return View(employee);
             }
             catch (Exception e)
             {
@@ -123,19 +141,21 @@ namespace EMS.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost("/employee/delete")]
-        public IActionResult DeleteEmployee()
+        public IActionResult DeleteEmployee(int id, string returnUrl)
         {
             try
             {
                 logger.LogDebug("DeleteEmployee()");
-                int id = int.Parse(HttpContext.Request.Form["id"]);
                 Employee employee = context.Employee.Find(id);
-                context.Employee.Remove(employee);
+                employee.Status = false;
+
+                context.Entry(employee).Property("CreatedBy").IsModified = false;
+                context.Entry(employee).Property("DateCreated").IsModified = false;
+              
                 context.SaveChanges();
                 logger.LogInformation("Employee with id: {id} was deleted by {name}", employee.Id, User.Identity.Name);
-                return RedirectToAction("Allemployees");
+                return Redirect(returnUrl);
             }
             catch (Exception e)
             {
@@ -144,7 +164,6 @@ namespace EMS.Controllers
             }
         }
 
-        [Authorize]
         public IActionResult ShowReports()
         {
             List<Employee> employees = null;
@@ -154,8 +173,7 @@ namespace EMS.Controllers
         }
 
 
-        [Authorize]
-        [HttpPost()]
+        [HttpPost]
         public IActionResult ShowReports(string periudha, string renditja, string orderby)
         {
             DateTime dt = DateTime.Now;
@@ -239,7 +257,6 @@ namespace EMS.Controllers
             return View();
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult Update(Employee employee)
         {
@@ -261,14 +278,12 @@ namespace EMS.Controllers
             }
             catch (Exception e)
             {
-                logger.LogError("Error updating Employee with id: {id}", employee.Id);
+                logger.LogError("Error updating Employee with id: {id}", employee.Id, e);
                 return RedirectToAction("Error", "Home");
             }
         }
         public IActionResult ShfaqKontraten() {
-            
-            return View();
-          
+            return View();          
         }
     }
 }
