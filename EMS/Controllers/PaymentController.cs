@@ -91,9 +91,12 @@ namespace EMS.Controllers
                 ViewData["payment"] = payment;
                 return View();
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
                 return NotFound();
+            }catch(Exception e)
+            {
+                return BadRequest();
             }            
         }
 
@@ -131,7 +134,7 @@ namespace EMS.Controllers
                 else
                 {
                     TempData["msg"] = "Nuk ka ditë të pa paguara në këtë periudhë.";
-                    return View();
+                    return RedirectToAction("Fatura", new { id = employee.Id });
                 }
 
                 if (!(totalPayment <= minimumPayment))
@@ -158,8 +161,8 @@ namespace EMS.Controllers
                 }
                 else
                 {
-                    TempData["msg"] = "Par arsye ligjore ju nuk mund ti tërhiqni me pak se 80 euro.";
-                    return View();
+                    TempData["msg"] = "Për arsye ligjore ju nuk mund ti tërhiqni me pak se 80 euro.";
+                    return RedirectToAction("Payment", new { id = employee.Id});
                 }
             }
             catch(ArgumentNullException e)

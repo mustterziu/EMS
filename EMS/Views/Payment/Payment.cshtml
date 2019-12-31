@@ -36,7 +36,14 @@
                         }
                         else
                         {
+                            @try
+                            {
                             <input class="form-control" type="date" readonly value="@employee.Attendance.First().StartTime.ToString("yyyy-MM-dd")">
+
+                            }catch(Exception e)
+                            {
+                                <input class="from-controll" type="date" readonly/>
+                            }
                         }
                         <hr />
                         <input type="hidden" name="id" id="test" value="@employee.Id" />

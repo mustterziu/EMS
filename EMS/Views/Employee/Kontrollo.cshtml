@@ -51,17 +51,28 @@
             <th>Ora e Fillmit</th>
             <th>Ora e Mbarimit</th>
             <th>Pagesa</th>
+            <th>Paguar</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var atd in employee.Attendance)
+        @foreach (Attendance atd in employee.Attendance.Reverse())
         {
             <tr>
                 <td>@employee.FirstName</td>
-                <td>@atd.StartTime.Day.@atd.StartTime.Month.@atd.StartTime.Year</td>
-                <td>@atd.StartTime.Hour:@atd.StartTime.Minute:@atd.StartTime.Second</td>
-                <td>@atd.EndTime?.Hour:@atd.EndTime?.Minute:@atd.EndTime?.Second</td>
-                <td>@atd.Payment€</td>
+                <td>@atd.StartTime.ToString("dd MMMM yyyy")</td>
+                <td>@atd.StartTime.ToString("HH:mm:ss")</td>
+                <td>@atd.EndTime?.ToString("HH:mm:ss")</td>
+                <td>@atd.payment€</td>
+                <td class="d-flex justify-content-center">
+                    @if (atd.PaymentId != null)
+                    {
+                        <i class="fas fa-check-circle text-success"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-times-circle text-danger"></i>
+                    }
+                </td>
             </tr>
         }
     </tbody>

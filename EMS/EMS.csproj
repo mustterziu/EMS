@@ -10,6 +10,12 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Migrations\20191129162740_EMS.cs" />
+    <Compile Remove="Migrations\20191129162740_EMS.Designer.cs" />
+    <Compile Remove="Migrations\20191129220255_base.cs" />
+    <Compile Remove="Migrations\20191129220255_base.Designer.cs" />
+    <Compile Remove="Migrations\20191130200657_AdminChanges.cs" />
+    <Compile Remove="Migrations\20191130200657_AdminChanges.Designer.cs" />
     <Compile Remove="Migrations\20191217102700_payments.cs" />
     <Compile Remove="Migrations\20191217102700_payments.Designer.cs" />
     <Compile Remove="Migrations\20191219203933_EmployeeNew.cs" />
@@ -30,6 +36,10 @@
     <Compile Remove="Migrations\20191219235528_FinalFinal.Designer.cs" />
     <Compile Remove="Migrations\20191219235728_Final.cs" />
     <Compile Remove="Migrations\20191219235728_Final.Designer.cs" />
+    <Compile Remove="Migrations\20191220000445_NewFields.cs" />
+    <Compile Remove="Migrations\20191220000445_NewFields.Designer.cs" />
+    <Compile Remove="Migrations\20191231174007_payments_update.cs" />
+    <Compile Remove="Migrations\20191231174007_payments_update.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />

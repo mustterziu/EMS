@@ -134,8 +134,7 @@ namespace EMS.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -171,15 +170,13 @@ namespace EMS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("NrBankes")
-                        .HasColumnType("bigint")
-                        .HasMaxLength(16);
+                        .HasColumnType("bigint");
 
                     b.Property<double>("PaymentPerHour")
                         .HasColumnType("float");
 
                     b.Property<long>("PersonalNumber")
-                        .HasColumnType("bigint")
-                        .HasMaxLength(11);
+                        .HasColumnType("bigint");
 
                     b.Property<long>("PhoneNumber")
                         .HasColumnType("bigint");

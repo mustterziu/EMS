@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.Migrations
 {
     [DbContext(typeof(EMSContext))]
-    [Migration("20191231160542_payments")]
-    partial class payments
+    [Migration("20191231174519_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -127,10 +127,16 @@ namespace EMS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Banka")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -140,6 +146,10 @@ namespace EMS.Migrations
 
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -161,8 +171,14 @@ namespace EMS.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("NrBankes")
+                        .HasColumnType("bigint");
+
                     b.Property<double>("PaymentPerHour")
                         .HasColumnType("float");
+
+                    b.Property<long>("PersonalNumber")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("PhoneNumber")
                         .HasColumnType("bigint");

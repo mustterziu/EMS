@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EMS.Migrations
 {
-    public partial class EMS : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,7 @@ namespace EMS.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true)
+                    PasswordChangeRequired = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,19 +53,46 @@ namespace EMS.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    DateCreated = table.Column<DateTime>(nullable: true),
+                    DateModified = table.Column<DateTime>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    ModifiedBy = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(maxLength: 15, nullable: false),
                     LastName = table.Column<string>(maxLength: 15, nullable: false),
                     Gender = table.Column<string>(nullable: false),
                     PhoneNumber = table.Column<long>(nullable: false),
-                    City = table.Column<string>(maxLength: 15, nullable: false),
+                    PersonalNumber = table.Column<long>(nullable: false),
+                    Birthday = table.Column<DateTime>(nullable: false),
+                    Banka = table.Column<string>(nullable: false),
+                    NrBankes = table.Column<long>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    City = table.Column<string>(nullable: false),
                     State = table.Column<string>(nullable: false),
                     Position = table.Column<string>(nullable: false),
                     Schedule = table.Column<string>(nullable: false),
-                    PaymentPerHour = table.Column<double>(nullable: false)
+                    PaymentPerHour = table.Column<double>(nullable: false),
+                    Holiday = table.Column<string>(nullable: true),
+                    Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employee", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeRroga",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Position = table.Column<string>(nullable: true),
+                    Paga = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeRroga", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,6 +202,31 @@ namespace EMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Payment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    startDate = table.Column<DateTime>(nullable: false),
+                    endDate = table.Column<DateTime>(nullable: false),
+                    paymentNeto = table.Column<float>(nullable: false),
+                    paymentBruto = table.Column<float>(nullable: false),
+                    paid = table.Column<bool>(nullable: false),
+                    paymentDate = table.Column<DateTime>(nullable: true),
+                    employeeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payment_Employee_employeeId",
+                        column: x => x.employeeId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Attendance",
                 columns: table => new
                 {
@@ -183,7 +235,8 @@ namespace EMS.Migrations
                     EmpId = table.Column<int>(nullable: false),
                     StartTime = table.Column<DateTime>(nullable: false),
                     EndTime = table.Column<DateTime>(nullable: true),
-                    Payment = table.Column<double>(nullable: true)
+                    payment = table.Column<double>(nullable: true),
+                    PaymentId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,6 +247,12 @@ namespace EMS.Migrations
                         principalTable: "Employee",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Attendance_Payment_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "Payment",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -239,6 +298,16 @@ namespace EMS.Migrations
                 name: "IX_Attendance_EmpId",
                 table: "Attendance",
                 column: "EmpId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Attendance_PaymentId",
+                table: "Attendance",
+                column: "PaymentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payment_employeeId",
+                table: "Payment",
+                column: "employeeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -262,10 +331,16 @@ namespace EMS.Migrations
                 name: "Attendance");
 
             migrationBuilder.DropTable(
+                name: "EmployeeRroga");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Payment");
 
             migrationBuilder.DropTable(
                 name: "Employee");
