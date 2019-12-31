@@ -50,12 +50,13 @@ namespace EMS.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    employeeId = table.Column<int>(nullable: true),
                     startDate = table.Column<DateTime>(nullable: false),
                     endDate = table.Column<DateTime>(nullable: false),
                     paymentNeto = table.Column<float>(nullable: false),
                     paymentBruto = table.Column<float>(nullable: false),
-                    paid = table.Column<bool>(nullable: false)
+                    paid = table.Column<bool>(nullable: false),
+                    paymentDate = table.Column<DateTime>(nullable: true),
+                    employeeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -65,7 +66,7 @@ namespace EMS.Migrations
                         column: x => x.employeeId,
                         principalTable: "Employee",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

@@ -11,8 +11,8 @@
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">Data e pageses</th>
-            <th scope="col">Data e kryerjes se pageses</th>
+            <th scope="col">Data e fillimit</th>
+            <th scope="col">Data e fundit</th>
             <th scope="col">Pagesa Neto</th>
             <th scope="col">Pagesa Bruto</th>
             <th scope="col">Action</th>
@@ -21,11 +21,16 @@
         @foreach(Payment p in Model.Payments)
         {
             <tr>
-                <td>@p.startDate</td>
-                <td>@p.endDate</td>
+                <td>@p.startDate.ToString("dd MMMM yyyy")</td>
+                <td>@p.endDate.ToString("dd MMMM yyyy")</td>
                 <td>@p.paymentNeto</td>
+
                 <td>@p.paymentBruto</td>
-                <td><a class="btn btn-danger" asp-controller="Payment" asp-action="DeletePayment" asp-route-id="@p.Id">Delete</a></td>
+                <td>
+                        <a class="btn @(p.paid? "btn-primary": "btn-warning")" asp-controller="Payment" asp-action="Fatura" asp-route-id="@p.Id">
+                            @(p.paid? "Shiko faturen": "Perfundo pagesen")
+                        </a>                 
+                <a class="btn btn-danger" asp-controller="Payment" asp-action="DeletePayment" asp-route-id="@p.Id">Delete</a></td>
             </tr>
         }
     </tbody>

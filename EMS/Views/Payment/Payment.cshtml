@@ -3,6 +3,9 @@
     ViewData["Title"] = "Payment";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Active = "Kontrollo";
+    Payment lastPayment = (Payment)ViewData["LastPayment"];
+    Employee employee = (Employee)ViewData["employee"];
+    DateTime? maxDate = (DateTime?)ViewData["maxDate"];
 }
 
 @if (TempData["msg"] != null)
@@ -15,8 +18,6 @@
     </div>
 }
 
-
-
 <div class="container mt-2">
     <div class="row">
         <div class="col-md-6">
@@ -25,17 +26,31 @@
             <hr>
             <p>Ne kete pjese menaxheri mund te krijon nje pagese te re per nje periudhe te caktuar kohore!</p>
             <button type="button" data-toggle="collapse" href="#caktoPagesen" aria-expanded="false" aria-controls="caktoPagesen" class="btn btn-info">Cakto Pagesen <i class="fas fa-arrow-down"></i></button>
-            <div class="collapse" id="caktoPagesen">
-                <div class="card card-body">
+            <div class="collapse mb-2" id="caktoPagesen">
+                <div class="card card-body mt-2">
                     <form method="post" asp-controller="Payment" asp-action="Payment">
                         <p>Pagesa e fundit e marrur:</p>
-                        <input class="form-control" type="date" readonly>
+                        @if (lastPayment != null)
+                        {
+                            <input class="form-control" type="date" readonly value="@lastPayment.endDate.ToString("yyyy-MM-dd")">
+                        }
+                        else
+                        {
+                            <input class="form-control" type="date" readonly value="@employee.Attendance.First().StartTime.ToString("yyyy-MM-dd")">
+                        }
                         <hr />
-                        <input type="number" name="id" />
+                        <input type="hidden" name="id" id="test" value="@employee.Id" />
                         <p>Cakto periudhen per pagesen e rradhes:</p>
-                        <input class="form-control" type="date" name="time" />
-                        <br />
-                        <button type="submit" class="btn btn-success">Gjenero Faturen</button>
+                        @if(maxDate != null)
+                        {
+                            <input class="form-control" type="date" name="time" id="endDate" max="@maxDate.Value.ToString("yyyy-MM-dd")" min="@employee.Attendance.First().StartTime.ToString("yyyy-MM-dd")"/>
+                            <button type="submit" class="mt-2 btn-success form-control">Gjenero Faturen</button>
+                            <br />
+                        }
+                        else
+                        {
+                            <p class="text-danger">Punëtori duhet ti ketë së paku 2 ditë të pa paguara!</p>
+                        }
                     </form>
                 </div>
             </div>
