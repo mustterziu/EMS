@@ -63,6 +63,22 @@ namespace EMS.Controllers
             }
         }
 
+        public IActionResult OrariEmployees()
+        {
+            try
+            {
+                logger.LogDebug("Showing ActiveEmployees()");
+                List<Employee> employees = context.Employee.Where(emp => emp.Status == true).ToList();
+                ViewData["employees"] = employees;
+                return View();
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Error showing ActiveEmployees", e);
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
         [HttpPost("/regjistro")]
         public IActionResult Regjistro(Employee employee)
         {
@@ -125,6 +141,24 @@ namespace EMS.Controllers
                 logger.LogError("Error getting details for {id}", id);
                 return RedirectToAction("Error", "Home");
             }
+        }
+
+        [HttpGet("/ChangeOrari/{id}")]
+        public IActionResult ChangeOrari(int id)
+        {
+            Employee employee = context.Employee.Find(id);
+            if(employee.Schedule == "Pasdite")
+            {
+                employee.Schedule = "Paradite";
+            }
+            else
+            {
+                employee.Schedule = "Pasdite";
+            }
+
+            context.SaveChanges();
+
+            return RedirectToAction("OrariEmployees");
         }
 
         [HttpGet("/employee/{id}")]
