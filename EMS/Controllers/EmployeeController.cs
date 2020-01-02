@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using EMS.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using OfficeOpenXml;
+using OfficeOpenXml.Table;
 using static Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions;
 
 namespace EMS.Controllers
@@ -174,7 +178,7 @@ namespace EMS.Controllers
 
 
         [HttpPost]
-        public IActionResult ShowReports(string periudha, string renditja, string orderby)
+        public IActionResult ShowReports(string periudha, string renditja, string orderby , string excel)
         {
             DateTime dt = DateTime.Now;
             DateTime mondayDate = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
@@ -252,9 +256,109 @@ namespace EMS.Controllers
                         break;
                 }
             }
+
+            if(excel == "Po")
+            {
+                try
+                {
+                    DataTable Dt = new DataTable();
+                    Dt.Columns.Add("ID", typeof(string));
+                    Dt.Columns.Add("Emri", typeof(string));
+                    Dt.Columns.Add("Mbiemri", typeof(string));
+                    Dt.Columns.Add("Pozita", typeof(string));
+                    Dt.Columns.Add("Rroga", typeof(string));
+
+                    foreach (var emp in employees.ToList())
+                    {
+                        DataRow row = Dt.NewRow();
+                        row[0] = emp.Id;
+                        row[1] = emp.FirstName;
+                        row[2] = emp.LastName;
+                        row[3] = emp.Position;
+                        row[4] = emp.Paga;
+                        Dt.Rows.Add(row);
+                    }
+
+                    var memoryStream = new MemoryStream();
+
+                    using (var excelPackage = new ExcelPackage(memoryStream))
+                    {
+                        var worksheet = excelPackage.Workbook.Worksheets.Add("Sheet1");
+                        worksheet.Cells["A1"].LoadFromDataTable(Dt, true, TableStyles.None);
+                        worksheet.Cells["A1:AN1"].Style.Font.Bold = true;
+                        worksheet.DefaultRowHeight = 18;
+
+                        worksheet.Column(2).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                        worksheet.Column(6).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                        worksheet.Column(7).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                        worksheet.DefaultColWidth = 20;
+
+                        worksheet.Column(2).AutoFit();
+                        byte[] data = excelPackage.GetAsByteArray();
+                        return File(data, "application/octet-m", "Raportet.xlsx");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
             ViewData["employees"] = employees.ToList();
             ViewBag.Active = "Reports";
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult DownloadReports()
+        {
+
+            List<Employee> employees = context.Employee.ToList();
+
+            try
+            {
+                DataTable Dt = new DataTable();
+                Dt.Columns.Add("ID", typeof(string));
+                Dt.Columns.Add("Emri", typeof(string));
+                Dt.Columns.Add("Mbiemri", typeof(string));
+                Dt.Columns.Add("Pozita", typeof(string));
+                Dt.Columns.Add("Rroga", typeof(string));
+
+                foreach(var emp in employees)
+                {
+                    DataRow row = Dt.NewRow();
+                    row[0] = emp.Id;
+                    row[1] = emp.FirstName;
+                    row[2] = emp.LastName;
+                    row[3] = emp.NrBankes;
+                    row[4] = emp.PaymentPerHour;
+                    Dt.Rows.Add(row);
+                }
+
+                var memoryStream = new MemoryStream();
+
+                using (var excelPackage = new ExcelPackage(memoryStream))
+                {
+                    var worksheet = excelPackage.Workbook.Worksheets.Add("Sheet1");
+                    worksheet.Cells["A1"].LoadFromDataTable(Dt, true, TableStyles.None);
+                    worksheet.Cells["A1:AN1"].Style.Font.Bold = true;
+                    worksheet.DefaultRowHeight = 18;
+
+                    worksheet.Column(2).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    worksheet.Column(6).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Column(7).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.DefaultColWidth = 20;
+
+                    worksheet.Column(2).AutoFit();
+                    byte[] data = excelPackage.GetAsByteArray();
+                    return File(data, "application/octet-m", "Raportet.xlsx");
+                }
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+
+         
         }
 
         [HttpPost]
