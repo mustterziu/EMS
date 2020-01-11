@@ -96,6 +96,16 @@ namespace EMS.Controllers
                     context.SaveChanges();
                     logger.LogDebug("New Employee was created by " + User.Identity.Name);
                     TempData["registered"] = true;
+
+                    Logs logs = new Logs();
+
+                    logs.mesazhi = "Nje puntor u krijuar";
+                    logs.createdBy = "Admini";
+                    logs.createdAt = DateTime.Now;
+
+                    context.Logs.Add(logs);
+                    context.SaveChanges();
+
                     return RedirectToAction("Allemployees");
                 }
                 return RedirectToAction("Index", "Home");
@@ -157,6 +167,13 @@ namespace EMS.Controllers
             }
 
             context.SaveChanges();
+            Logs logs = new Logs();
+            logs.mesazhi = "Orari u ndrrua per " + employee.FirstName;
+            logs.createdBy = "Admini";
+            logs.createdAt = DateTime.Now;
+
+            context.Logs.Add(logs);
+            context.SaveChanges();
 
             return RedirectToAction("OrariEmployees");
         }
@@ -192,6 +209,15 @@ namespace EMS.Controllers
                 context.Entry(employee).Property("DateCreated").IsModified = false;
               
                 context.SaveChanges();
+
+                Logs logs = new Logs();
+                logs.mesazhi = "Puntori u fshi " + employee.FirstName;
+                logs.createdBy = "Admini";
+                logs.createdAt = DateTime.Now;
+
+                context.Logs.Add(logs);
+                context.SaveChanges();
+
                 logger.LogInformation("Employee with id: {id} was deleted by {name}", employee.Id, User.Identity.Name);
                 return Redirect(returnUrl);
             }
@@ -407,6 +433,15 @@ namespace EMS.Controllers
                     context.Entry(employee).Property("CreatedBy").IsModified = false;
                     context.Entry(employee).Property("DateCreated").IsModified = false;
                     context.SaveChanges();
+
+                    Logs logs = new Logs();
+                    logs.mesazhi = "Puntori u ndryshua " + employee.FirstName;
+                    logs.createdBy = "Admini";
+                    logs.createdAt = DateTime.Now;
+
+                    context.Logs.Add(logs);
+                    context.SaveChanges();
+
                     logger.LogDebug("Emplyee with id: {id} was updated by: {name}", employee.Id, User.Identity.Name);
                     ViewData["employee"] = employee;
                     ViewData["updated"] = true;

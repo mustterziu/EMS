@@ -21,6 +21,9 @@ namespace EMS.Models
 
         public DbSet<EmployeeRroga> EmployeeRroga { get; set; }
 
+        public DbSet<Logs> Logs { get; set; }
+
+
         public override int SaveChanges()
         {
             AddTimestamps();
