@@ -236,6 +236,14 @@ namespace EMS.Controllers
             return View();
         }
 
+        public IActionResult Logs()
+        {
+            List<Logs> logs = context.Logs.ToList(); ;
+            ViewData["logs"] = logs;
+            ViewBag.Active = "Logs";
+            return View();
+        }
+
 
         [HttpPost]
         public IActionResult ShowReports(string periudha, string renditja, string orderby , string excel)

@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Logs";
+    var logs = (List<Logs>)ViewData["logs"];
+    ViewBag.Active = "Kryefaqja";
+}
+
+
+
+
+<table id="example" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>Aksioni</th>
+            <th>Nga</th>
+            <th>Koha</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var log in logs)
+        {
+            <tr>
+                <td>@log.mesazhi</td>
+                <td>@log.createdBy</td>
+                <td>@log.createdAt</td>
+
+            </tr>
+        }
+        </tbody>
+</table>
+
+
+<partial name="Partials/FshijModal" />
+
+@section Scripts{
+    <script>
+
+
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+
+
+    </script>
+}

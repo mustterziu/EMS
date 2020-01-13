@@ -90,8 +90,14 @@
                             </li>
                             <li class="nav-item">
                                 <a asp-controller="Account" asp-action="Security" class="nav-link @(ViewBag.Active.Equals("Security") ? "active" : "")">
-                                <i class="fas fa-key"></i>
-                                <p>Ndrysho Fjalekalimin</p>
+                                    <i class="fas fa-key"></i>
+                                    <p>Ndrysho Fjalekalimin</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Employee" asp-action="Logs" class="nav-link @(ViewBag.Active.Equals("Logs") ? "active" : "")">
+                                    <i class="fas fa-address-book"></i>
+                                    <p>Logs</p>
                                 </a>
                             </li>
                             <li class="nav-item">
