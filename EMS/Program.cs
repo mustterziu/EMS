@@ -58,7 +58,7 @@ namespace EMS
                 catch (Exception e)
                 {
                     ILogger<Program> logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError("Error creating default user");
+                    logger.LogError("Error creating default user", e);
                 }
             }
         }

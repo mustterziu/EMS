@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using EMS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
@@ -30,7 +30,6 @@ namespace EMS.Controllers
             this.userManager = userManager;
         }
 
-        [HttpGet("/AllEmployees")]
         public IActionResult Allemployees()
         {
             try
@@ -42,6 +41,7 @@ namespace EMS.Controllers
             }
             catch (Exception e)
             {
+                LogException(e);
                 logger.LogError("Error showing AllEmployees", e);
                 return RedirectToAction("Error", "Home");
             }
@@ -58,6 +58,8 @@ namespace EMS.Controllers
             }
             catch (Exception e)
             {
+                LogException(e);
+
                 logger.LogError("Error showing ActiveEmployees", e);
                 return RedirectToAction("Error", "Home");
             }
@@ -74,12 +76,14 @@ namespace EMS.Controllers
             }
             catch (Exception e)
             {
+                LogException(e);
+
                 logger.LogError("Error showing ActiveEmployees", e);
                 return RedirectToAction("Error", "Home");
             }
         }
 
-        [HttpPost("/regjistro")]
+        [HttpPost]
         public IActionResult Regjistro(Employee employee)
         {
             try
@@ -96,14 +100,11 @@ namespace EMS.Controllers
                     context.SaveChanges();
                     logger.LogDebug("New Employee was created by " + User.Identity.Name);
                     TempData["registered"] = true;
-
-                    Logs logs = new Logs();
-
-                    logs.mesazhi = "Nje puntor u krijuar";
-                    logs.createdBy = "Admini";
-                    logs.createdAt = DateTime.Now;
-
-                    context.Logs.Add(logs);
+  
+                    context.Logs.Add(new Logs { 
+                        mesazhi = $"Employee {employee.FirstName} {employee.LastName} was added with id: {employee.Id}", 
+                        createdBy = User.FindFirst(ClaimTypes.NameIdentifier).Value, 
+                        createdAt = DateTime.Now });
                     context.SaveChanges();
 
                     return RedirectToAction("Allemployees");
@@ -112,9 +113,15 @@ namespace EMS.Controllers
             }
             catch (Exception e)
             {
+                LogException(e);
+
                 logger.LogError("Error creating new Employee", e);
                 return RedirectToAction("Error", "Home");
             }
+        }
+
+        public IActionResult ShfaqKontraten() {
+            return View();          
         }
         [HttpPost]
         public IActionResult ShfaqKontraten(Employee employee)
@@ -123,20 +130,20 @@ namespace EMS.Controllers
             {
                 logger.LogDebug("ShfaqKontraten()");
                 if (ModelState.IsValid)
-                {
-                   
+                {                  
                     return View(employee);
                 }
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception e)
             {
+                LogException(e);
+
                 logger.LogError("Error creating new Employee", e);
                 return RedirectToAction("Error", "Home");
             }
         }
 
-        [HttpGet("/Kontrollo/{id}")]
         public IActionResult Kontrollo(int id)
         {
             try
@@ -148,12 +155,13 @@ namespace EMS.Controllers
             }
             catch (Exception e)
             {
+                LogException(e);
+
                 logger.LogError("Error getting details for {id}", id);
                 return RedirectToAction("Error", "Home");
             }
         }
 
-        [HttpGet("/ChangeOrari/{id}")]
         public IActionResult ChangeOrari(int id)
         {
             Employee employee = context.Employee.Find(id);
@@ -166,42 +174,137 @@ namespace EMS.Controllers
                 employee.Schedule = "Pasdite";
             }
 
-            context.SaveChanges();
-            Logs logs = new Logs();
-            logs.mesazhi = "Orari u ndrrua per " + employee.FirstName;
-            logs.createdBy = "Admini";
-            logs.createdAt = DateTime.Now;
-
-            context.Logs.Add(logs);
+            context.Logs.Add(new Logs
+            {
+                mesazhi = $"Orari u ndryshua ne {employee.Schedule} per punetorin {employee.FirstName} me id {employee.Id}",
+                createdBy = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                createdAt = DateTime.Now
+            });
             context.SaveChanges();
 
             return RedirectToAction("OrariEmployees");
         }
 
-        [HttpGet("/employee/{id}")]
-        public IActionResult ShowEmployee(int id)
+        public IActionResult Update(int id)
         {
             try
             {
                 logger.LogDebug("ShowEmployee({id})", id);
                 Employee employee = context.Employee.Find(id);
-                ViewData["employee"] = employee;
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+
                 ViewData["updated"] = false;
                 return View(employee);
             }
             catch (Exception e)
             {
+                LogException(e);
+
                 logger.LogError("Error getting details for {id}", id);
                 return RedirectToAction("Error", "Home");
             }
         }
-
-        [HttpPost("/employee/delete")]
-        public IActionResult DeleteEmployee(int id, string returnUrl)
+        [HttpPost]
+        public IActionResult Update(Employee employee)
         {
             try
             {
-                logger.LogDebug("DeleteEmployee()");
+                logger.LogDebug("Update()");
+                if (ModelState.IsValid)
+                {
+                    context.Employee.Update(employee);
+                    context.Entry(employee).Property("CreatedBy").IsModified = false;
+                    context.Entry(employee).Property("DateCreated").IsModified = false;
+
+                    context.Logs.Add(new Logs
+                    {
+                        mesazhi = $"Te dhenat u ndryshuan per punetorin {employee.FirstName} me id {employee.Id}",
+                        createdBy = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                        createdAt = DateTime.Now
+                    });
+
+                    context.SaveChanges();
+
+                    logger.LogDebug("Emplyee with id: {id} was updated by: {name}", employee.Id, User.Identity.Name);
+                    ViewData["updated"] = true;
+                    return View(employee);   
+                }
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception e)
+            {
+                LogException(e);
+
+                logger.LogError("Error updating Employee with id: {id}", employee.Id, e);
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                Employee emp = context.Employee.Find(id);
+                if (emp == null)
+                {
+                    return BadRequest();
+                }
+                context.Employee.Remove(emp);
+                context.SaveChanges();
+
+                logger.LogInformation("Employee with id: {id} was fired by {name}", emp.Id, User.Identity.Name);
+
+                return RedirectToAction("AllEmployees");
+            }catch(Exception e)
+            {
+                LogException(e);
+
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        public IActionResult KtheNePune(int id)
+        {
+            try
+            {
+                logger.LogDebug("KtheNePune()");
+                Employee employee = context.Employee.Find(id);
+                employee.Status = true;
+
+                context.Entry(employee).Property("CreatedBy").IsModified = false;
+                context.Entry(employee).Property("DateCreated").IsModified = false;
+
+                context.Logs.Add(new Logs
+                {
+                    mesazhi = $"Statusi per punetorin {employee.FirstName} u ndryshua",
+                    createdBy = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                    createdAt = DateTime.Now
+                });
+
+                context.SaveChanges();
+
+                logger.LogInformation("Employee with id: {id} was employed again by {name}", employee.Id, User.Identity.Name);
+
+                return RedirectToAction("Allemployees");
+            }
+            catch (Exception e)
+            {
+                LogException(e);
+
+                logger.LogError("Error employing again Employee with id: {id}");
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        public IActionResult Pusho(int id)
+        {
+            try
+            {
+                logger.LogDebug("Pusho()");
                 Employee employee = context.Employee.Find(id);
                 employee.Status = false;
 
@@ -210,20 +313,23 @@ namespace EMS.Controllers
               
                 context.SaveChanges();
 
-                Logs logs = new Logs();
-                logs.mesazhi = "Puntori u fshi " + employee.FirstName;
-                logs.createdBy = "Admini";
-                logs.createdAt = DateTime.Now;
+                context.Logs.Add(new Logs
+                {
+                    mesazhi = $"Statusi per punetorin {employee.FirstName} u ndryshua",
+                    createdBy = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                    createdAt = DateTime.Now
+                });
 
-                context.Logs.Add(logs);
                 context.SaveChanges();
 
-                logger.LogInformation("Employee with id: {id} was deleted by {name}", employee.Id, User.Identity.Name);
-                return Redirect(returnUrl);
+                logger.LogInformation("Employee with id: {id} was fired by {name}", employee.Id, User.Identity.Name);
+                return RedirectToAction("Allemployees");
             }
             catch (Exception e)
             {
-                logger.LogError("Error deleting Employee with id: {id}");
+                LogException(e);
+
+                logger.LogError("Error firing Employee with id: {id}");
                 return RedirectToAction("Error", "Home");
             }
         }
@@ -243,7 +349,6 @@ namespace EMS.Controllers
             ViewBag.Active = "Logs";
             return View();
         }
-
 
         [HttpPost]
         public IActionResult ShowReports(string periudha, string renditja, string orderby , string excel)
@@ -368,6 +473,7 @@ namespace EMS.Controllers
                 }
                 catch (Exception ex)
                 {
+                    LogException(ex);
                     throw;
                 }
             }
@@ -423,48 +529,20 @@ namespace EMS.Controllers
             }
             catch(Exception ex)
             {
+                LogException(ex);
                 throw;
-            }
-
-         
+            }         
         }
 
-        [HttpPost]
-        public IActionResult Update(Employee employee)
+        private void LogException(Exception e)
         {
-            try
+            context.Logs.Add(new Logs
             {
-                logger.LogDebug("Update()");
-                if (ModelState.IsValid)
-                {
-                    context.Employee.Update(employee);
-                    context.Entry(employee).Property("CreatedBy").IsModified = false;
-                    context.Entry(employee).Property("DateCreated").IsModified = false;
-                    context.SaveChanges();
-
-                    Logs logs = new Logs();
-                    logs.mesazhi = "Puntori u ndryshua " + employee.FirstName;
-                    logs.createdBy = "Admini";
-                    logs.createdAt = DateTime.Now;
-
-                    context.Logs.Add(logs);
-                    context.SaveChanges();
-
-                    logger.LogDebug("Emplyee with id: {id} was updated by: {name}", employee.Id, User.Identity.Name);
-                    ViewData["employee"] = employee;
-                    ViewData["updated"] = true;
-                    return View("showEmployee");   
-                }
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception e)
-            {
-                logger.LogError("Error updating Employee with id: {id}", employee.Id, e);
-                return RedirectToAction("Error", "Home");
-            }
-        }
-        public IActionResult ShfaqKontraten() {
-            return View();          
+                mesazhi = e.Message,
+                createdBy = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                createdAt = DateTime.Now
+            });
+            context.SaveChanges();
         }
     }
 }

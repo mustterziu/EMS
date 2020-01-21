@@ -34,7 +34,7 @@ namespace EMS.Controllers
                     return BadRequest("Already checked in today.");
                 }
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 Attendance attendance = new Attendance
                 {
@@ -47,7 +47,7 @@ namespace EMS.Controllers
 
                     return Ok("Checked In");
                 }
-                catch(NullReferenceException ex)
+                catch(NullReferenceException)
                 {
                     return NotFound($"Employee with id: {input.id} was not found");
                 }
@@ -81,7 +81,7 @@ namespace EMS.Controllers
                         endTime = attendance.EndTime?.ToShortTimeString(),
                         payment = attendance.payment.GetValueOrDefault(),
                     });
-                }catch(InvalidOperationException e)
+                }catch(InvalidOperationException)
                 {
                     return BadRequest("You must check in first");
                 }

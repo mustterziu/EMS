@@ -130,8 +130,29 @@ namespace EMS.Controllers
         [HttpPost]
         public IActionResult Profile(int empId)
         {
-            Employee employee = context.Employee.FirstOrDefault(emp => emp.Id == empId);
-            return View(employee);
+            try
+            {
+                Employee employee = context.Employee.Find(empId);
+                if (employee == null)
+                {
+                    //TODO return a view
+                    return NotFound();
+                }
+                return View(employee);
+            }
+            catch (Exception e)
+            {
+                context.Logs.Add(new Logs
+                {
+                    mesazhi = e.Message,
+                    createdBy = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                    createdAt = DateTime.Now
+                });
+
+                context.SaveChanges();
+
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         [HttpGet("/createUser")]

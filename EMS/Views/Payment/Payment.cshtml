@@ -40,7 +40,7 @@
                             {
                             <input class="form-control" type="date" readonly value="@employee.Attendance.First().StartTime.ToString("yyyy-MM-dd")">
 
-                            }catch(Exception e)
+                            }catch(Exception)
                             {
                                 <input class="from-controll" type="date" readonly/>
                             }
@@ -67,7 +67,7 @@
             <h2>Informata mbi pagesat e perfunduar!</h2>
             <hr>
             <p>Ne kete sektor mund ti shikoni te gjitha pagesat e perfunduar mbrenda nje kohe te caktuar!</p>
-            <a class="btn btn-danger" asp-controller="Payment" asp-action="PagesatEperfunduar" asp-route-id="1">Shiko Pagesat</a>
+            <a class="btn btn-danger" asp-controller="Payment" asp-action="PagesatEperfunduar" asp-route-id="@employee.Id">Shiko Pagesat</a>
         </div>
     </div>
 </div>

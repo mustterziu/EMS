@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace EMS.Controllers
 {
@@ -27,15 +28,29 @@ namespace EMS.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            ViewBag.Active = "Kryefaqja";
-            int nrPunetorve = context.Employee.Count();
-            int punetoretAktiv = context.Employee.Where(emp => emp.Status == true).Count();
-            ViewData["nrPunetoreve"] = nrPunetorve;
-            ViewData["punetoretAktiv"] = punetoretAktiv;
-            List<Attendance> attendance = context.Attendance.Where(a => a.StartTime.Date == DateTime.Now.Date).Include(a => a.Emp).ToList();
-            ViewData["attendance"] = attendance;
+            try
+            {
+                ViewBag.Active = "Kryefaqja";
+                int nrPunetorve = context.Employee.Count();
+                int punetoretAktiv = context.Employee.Where(emp => emp.Status == true).Count();
+                ViewData["nrPunetoreve"] = nrPunetorve;
+                ViewData["punetoretAktiv"] = punetoretAktiv;
+                List<Attendance> attendance = context.Attendance.Where(a => a.StartTime.Date == DateTime.Now.Date).Include(a => a.Emp).ToList();
+                ViewData["attendance"] = attendance;
 
-            return View();
+                return View();
+            }
+            catch (Exception e)
+            {
+                context.Logs.Add(new Logs
+                {
+                    mesazhi = e.Message,
+                    createdBy = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                    createdAt = DateTime.Now
+                });
+                context.SaveChanges();
+                return BadRequest(e);
+            }
         }
 
         [Authorize]

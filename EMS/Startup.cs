@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using EMS.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +13,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Newtonsoft.Json;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Reflection;
+using EMS.Models.ViewModels;
 
 namespace EMS
 {
@@ -27,6 +30,8 @@ namespace EMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));    
+            
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddIdentity<Admin, IdentityRole>(options =>

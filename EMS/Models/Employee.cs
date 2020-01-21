@@ -47,8 +47,7 @@ namespace EMS.Models
         [Required(ErrorMessage = "Ju lutem shtoni email")]
         public string Email { get; set; }
 
-        [Required (ErrorMessage = "Ju lutem shenoni Qytetin!")]
-        
+        [Required (ErrorMessage = "Ju lutem shenoni Qytetin!")]        
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Perdorni vetem shkronja, ju lutem!")]
         public string City { get; set; }
         
@@ -65,8 +64,11 @@ namespace EMS.Models
         public double PaymentPerHour { get; set; }
 
         public string Holiday { get; set; }
+
         public bool Status { get; set; }
+
         public ICollection<Attendance> Attendance { get; set; }
+
         public ICollection<Payment> Payments { get; set; }
     }
 }

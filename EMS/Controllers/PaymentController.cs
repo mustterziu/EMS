@@ -55,11 +55,11 @@ namespace EMS.Controllers
                 ViewData["employee"] = emp;
                 return View();
             }
-            catch(ArgumentNullException e)
+            catch(ArgumentNullException)
             {
                 return NotFound();
             }
-            catch (Exception e)
+            catch (Exception)
             {                
                 return BadRequest();
             }
@@ -73,10 +73,10 @@ namespace EMS.Controllers
             {
                 Employee emp = context.Employee.Include(emp => emp.Payments).First(e => e.Id == id);
                 return View(emp);
-            }catch(ArgumentNullException e)
+            }catch(ArgumentNullException)
             {
                 return NotFound();
-            }catch(Exception e)
+            }catch(Exception)
             {
                 return BadRequest();
             }
@@ -91,10 +91,10 @@ namespace EMS.Controllers
                 ViewData["payment"] = payment;
                 return View();
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
                 return NotFound();
-            }catch(Exception e)
+            }catch(Exception)
             {
                 return BadRequest();
             }            
@@ -105,7 +105,7 @@ namespace EMS.Controllers
         {
             try
             {
-                int minimumPayment = 80; //default minimum payment 
+                int minimumPayment = 80; 
                 DateTime endTime = DateTime.Parse(time);
 
                 Employee employee = context.Employee.Include(employee => employee.Attendance).First(emp => emp.Id == id);
@@ -165,10 +165,10 @@ namespace EMS.Controllers
                     return RedirectToAction("Payment", new { id = employee.Id});
                 }
             }
-            catch(ArgumentNullException e)
+            catch(ArgumentNullException)
             {
                 return NotFound();
-            }catch(Exception e)
+            }catch(Exception)
             {
                 return BadRequest();
             }            
@@ -186,7 +186,7 @@ namespace EMS.Controllers
 
                 return RedirectToAction("PagesatEperfunduar", new { id = payment.employeeId });
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }catch(Exception e)
@@ -215,7 +215,7 @@ namespace EMS.Controllers
                 TempData["msg"] = $"Pagesa për punëtorin {payment.employee.FirstName} {payment.employee.LastName} u anullua!";
                 return RedirectToAction("Payment", new { id = payment.employeeId });
             }
-            catch(ArgumentNullException e)
+            catch(ArgumentNullException)
             {
                 return NotFound();
             }

@@ -36,7 +36,7 @@
             <div class="icon">
                 <i class="fas fa-user-edit"></i>
             </div>
-            <a href="/Employee/@employee.Id" class="small-box-footer">
+            <a asp-controller="Employee" asp-action="Update" asp-route-id="@employee.Id" class="small-box-footer">
                 Kliko <i class="fas fa-arrow-circle-right"></i>
             </a>
         </div>
